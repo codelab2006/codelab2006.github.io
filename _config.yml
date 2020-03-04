@@ -29,11 +29,12 @@ paginate: 10
 paginate_path: /blog/pages/:num/
 
 jekyll-minifier:
+  exclude: assets/css/icons.css
   remove_spaces_inside_tags: true
   remove_multi_spaces: true
   remove_comments: true
   remove_intertag_spaces: true
-  compress_css: false
+  compress_css: true
   compress_javascript: true
   compress_json: true
   uglifier_args:
