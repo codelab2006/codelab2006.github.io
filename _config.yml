@@ -1,0 +1,40 @@
+collections_dir: collections
+
+collections:
+  posts:
+    output: true
+    permalink: /blog/:collection/:year/:month/:title
+  tutorials:
+    output: true
+    permalink: /codelab/:collection/:path
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      author: 黄永健
+  - scope:
+      path: "**/chapters/*.md"
+    values:
+      layout: chapter
+      author: 黄永健
+  - scope:
+      path: "**/index.md"
+    values:
+      layout: tutorial
+
+paginate: 10
+paginate_path: /blog/pages/:num/
+
+jekyll-minifier:
+  remove_spaces_inside_tags: true
+  remove_multi_spaces: true
+  remove_comments: true
+  remove_intertag_spaces: true
+  compress_css: false
+  compress_javascript: true
+  compress_json: true
+  uglifier_args:
+    harmony: true

@@ -1,0 +1,29 @@
+---
+title_suffix: 黄永健的个人站点
+---
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>
+      {%if page.title%}
+      {{page.title}} - {{layout.title_suffix}}
+      {%elsif layout.title%}
+      {{layout.title}} - {{layout.title_suffix}}
+      {%else%}
+      {{layout.title_suffix}}
+      {%endif%}
+    </title>
+    <link rel="stylesheet" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body class="d-flex flex-direction-column">
+    {%if layout.before_content%}{%include{{layout.before_content}}%}{%endif%}
+    {%if page.before_content%}{%include{{page.before_content}}%}{%endif%}
+    <main class="flex-grow-1">{{content}}</main>
+    {%if page.after_content%}{%include{{page.after_content}}%}{%endif%}
+    {%if layout.after_content%}{%include{{layout.after_content}}%}{%endif%}
+    <script src="/assets/js/script.js"></script>
+  </body>
+</html>

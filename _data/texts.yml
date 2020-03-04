@@ -1,0 +1,19 @@
+home: 首页
+blog: 网络日志
+codelab: Codelab
+about: 关于作者
+published_on: 发布于：
+author: 作者：
+date: 日期：
+posts: 文章列表
+no_posts: 作者很懒，一篇文章也没有写
+page: 当前页
+previous_page: 上一页
+next_page: 下一页
+tutorials: 教程列表
+no_tutorials: 作者很懒，一个教程也没有写
+chatpers: 章节列表
+no_chapters: 内容呢？ 快去问作者
+page_not_found: 您所访问的页面不存在
+go_home: 返回首页
+author_information: 作者只想安安静静的写代码... ...

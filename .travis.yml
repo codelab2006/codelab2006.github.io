@@ -1,0 +1,22 @@
+language: ruby
+
+rvm:
+  - 2.6.5
+
+env:
+  - JEKYLL_ENV=production
+
+before_install:
+  - gem install bundler
+
+script: bundle exec jekyll build
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  local_dir: _site
+  target_branch: master
+  on:
+    branch: development

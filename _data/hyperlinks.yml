@@ -1,0 +1,7 @@
+nav:
+  - name: blog
+    link: /blog
+  - name: codelab
+    link: /codelab
+  - name: about
+    link: /about.html

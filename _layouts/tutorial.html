@@ -1,0 +1,15 @@
+---
+layout: default
+logo: Codelab
+---
+<div class="d-flex justify-content-center my-48px px-8px">
+  <section class="container">
+    {%assign chapters = site.tutorials | where_exp: "item", "item.tutorial == page.name" | sort: "order"%}
+    {%assign size = chapters | size%}
+    {%if size > 0%}
+      {%include chapters-block.html title=site.data.texts.chapters items=chapters%}
+    {%else%}
+      <span class="text-info font-size-xx-small">{{site.data.texts.no_chapters}}</span>
+    {%endif%}
+  </section>
+</div>

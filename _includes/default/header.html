@@ -1,0 +1,18 @@
+<header class="p-relative">
+  <div class="d-flex h-4 px-8px bg-primary text-light align-items-center justify-content-space-between">
+    {%if page.logo or layout.logo%}
+    <h1>{%if page.logo%}{{page.logo}}{%elsif layout.logo%}{{layout.logo}}{%endif%}</h1>
+    {%endif%}
+    <button id="nav-toggler"></button>
+  </div>
+  <div id="nav-container" class="bg-primary px-8px align-items-center">
+    <nav>
+      <ul class="d-flex">
+        <li class="mx-16px my-16px"><a class="text-light" href="/">{{site.data.texts.home}}</a></li>
+        {%for item in site.data.hyperlinks.nav%}
+        <li class="mx-16px my-16px"><a class="text-light" href="{{item.link}}">{{site.data.texts[item.name]}}</a></li>
+        {%endfor%}
+      </ul>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,18 @@
+---
+layout: default
+logo: 网络日志
+---
+<div class="d-flex justify-content-center my-48px px-8px">
+  <article class="container">
+    <h2 class="p-6px bb-1px">
+      {{page.title}}
+    </h2>
+    <div class="my-16px">
+      <span class="d-block p-6px">{{site.data.texts.author}}{{page.author}}</span>
+      <span class="d-block p-6px">{{site.data.texts.date}}{{page.date | date: "%Y-%m-%d"}}</span>
+    </div>
+    <div class="my-32px p-6px">
+      {{content}}
+    </div>
+  </article>
+</div>

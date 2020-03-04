@@ -1,0 +1,12 @@
+---
+layout: container
+---
+<nav id="index-nav">
+  <ul>
+    {%for item in site.data.hyperlinks.nav%}
+    <li class="bg-primary">
+      <a class="text-light" href="{{item.link}}">{{site.data.texts[item.name]}}</a>
+    </li>
+    {%endfor%}
+  </ul>
+</nav>
