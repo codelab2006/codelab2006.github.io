@@ -25,7 +25,7 @@ console.log(binaryCount, octalCount, decimalCount, hexadecimalCount); // 2 8 10 
 ### String
 
 ```typescript
-let name: string = "Yongjian";
+let name: string = 'Yongjian';
 let message: string = `I'm ${name}`;
 console.log(message); // I'm Yongjian
 ```
@@ -41,8 +41,8 @@ console.log(list1.concat(list2)); // [1, 2, 3, 1, 2, 3]
 ### Tuple
 
 ```typescript
-let v: [string, number] = ["string", 100];
-console.log(v); // ["string", 100]
+let v: [string, number] = ['string', 100];
+console.log(v); // ['string', 100]
 ```
 
 ### Enum
@@ -72,11 +72,11 @@ console.log(typeName); // CCC
 
 ```typescript
 let x: any = 100;
-x = "Hello";
+x = 'Hello';
 x = true;
 x = [];
 
-let array: any[] = [1, "2", true];
+let array: any[] = [1, '2', true];
 ```
 
 ### Void
@@ -113,9 +113,9 @@ function infiniteLoop(): never {
 ### 类型转换
 
 ```typescript
-let someValue: any = "string";
+let someValue: any = 'string';
 let strLength: number = (<string>someValue).length;
 
-let someValue: any = "string";
+let someValue: any = 'string';
 let strLength: number = (someValue as string).length;
 ```
