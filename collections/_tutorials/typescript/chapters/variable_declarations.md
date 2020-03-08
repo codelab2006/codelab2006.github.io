@@ -57,7 +57,7 @@ console.log(bbb, ccc); // 2 3
 
 ```typescript
 let tuple: [number, string, boolean] = [1, 'Hi', true];
-let[x, y, z] = tuple;
+let [x, y, z] = tuple;
 console.log(x, y, z); // 1 "Hi" true
 
 let [a, b, c, d] = tuple; // no element at index '3'
