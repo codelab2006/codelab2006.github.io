@@ -35,33 +35,40 @@ const c = 100;
 #### 数组的解构
 
 ```typescript
-let array = [1, 2];
-let [aaa, bbb] = array;
-console.log(aaa, bbb); // 1 2
-[bbb, aaa] = [aaa, bbb];
-console.log(aaa, bbb); // 2 1
+let array = [1, 2, 3, 4];
+let [a, b] = array;
+console.log(a, b); // 1 2
+
+[b, a] = [a, b];
+console.log(a, b); // 2 1
+
+(function f([a, b]: number[]) {
+  console.log(a, b); // 1 2
+})(array);
+
+let [aa, ...bb] = array;
+console.log(aa, bb); // 1 [2, 3, 4]
+
+let [, bbb, ccc] = array;
+console.log(bbb, ccc); // 2 3
 ```
 
 #### Tuple 的解构
 
 ```typescript
-
 ```
 
 #### 对象的解构
 
 ```typescript
-
 ```
 
 #### 使用默认值
 
 ```typescript
-
 ```
 
 #### Spread
 
 ```typescript
-
 ```
