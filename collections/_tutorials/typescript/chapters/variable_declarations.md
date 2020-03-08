@@ -56,6 +56,17 @@ console.log(bbb, ccc); // 2 3
 #### Tuple 的解构
 
 ```typescript
+let tuple: [number, string, boolean] = [1, 'Hi', true];
+let[x, y, z] = tuple;
+console.log(x, y, z); // 1 "Hi" true
+
+let [a, b, c, d] = tuple; // no element at index '3'
+
+let [a1, b1, c1, ...d1] = tuple;
+console.log(a1, b1, c1, d1); // 1 "Hi" true []
+
+let [aa, ...bb] = tuple;
+console.log(aa, bb); // 1 ["Hi", true]
 ```
 
 #### 对象的解构
