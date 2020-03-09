@@ -7,22 +7,22 @@ logo: 网络日志
   <section class="container">
     {%assign size = paginator.posts | size%}
     {%if size > 0%}
-      {%include posts-block.html title=site.data.texts.posts items=paginator.posts%}
-      <div id="paginator-container" class="d-flex p-6px bt-1px justify-content-end align-items-center font-size-small">
-        {%if paginator.previous_page%}
-        <a class="bg-primary paginator-button" href="{{paginator.previous_page_path}}">{{site.data.texts.previous_page}}</a>
-        {%else%}
-        <span class="bg-primary-disabled paginator-button">{{site.data.texts.previous_page}}</span>
-        {%endif%}
-        <span id="paginator-page">{{site.data.texts.page}} {{paginator.page}} of {{paginator.total_pages}}</span>
-        {%if paginator.next_page%}
-        <a class="bg-primary paginator-button" href="{{paginator.next_page_path}}">{{site.data.texts.next_page}}</a>
-        {%else%}
-        <span class="bg-primary-disabled paginator-button">{{site.data.texts.next_page}}</span>
-        {%endif%}
-      </div>
+    {%include posts-block.html title=site.data.texts.posts items=paginator.posts%}
+    <div id="paginator-container" class="d-flex p-6px bt-1px justify-content-end align-items-center font-size-small">
+      {%if paginator.previous_page%}
+      <a class="bg-primary paginator-button" href="{{paginator.previous_page_path}}">{{site.data.texts.previous_page}}</a>
+      {%else%}
+      <span class="bg-primary-disabled paginator-button">{{site.data.texts.previous_page}}</span>
+      {%endif%}
+      <span id="paginator-page">{{site.data.texts.page}} {{paginator.page}} of {{paginator.total_pages}}</span>
+      {%if paginator.next_page%}
+      <a class="bg-primary paginator-button" href="{{paginator.next_page_path}}">{{site.data.texts.next_page}}</a>
+      {%else%}
+      <span class="bg-primary-disabled paginator-button">{{site.data.texts.next_page}}</span>
+      {%endif%}
+    </div>
     {%else%}
-      <span class="text-info font-size-xx-small">{{site.data.texts.no_posts}}</span>
+    <span class="text-info font-size-xx-small">{{site.data.texts.no_posts}}</span>
     {%endif%}
   </section>
 </div>

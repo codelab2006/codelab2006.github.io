@@ -8,9 +8,9 @@ logo: Codelab
     {%assign tutorials = site.tutorials | where_exp: "item", "item.name"%}
     {%assign size = tutorials | size%}
     {%if size > 0%}
-      {%include tutorials-block.html title=site.data.texts.tutorials items=tutorials%}
+    {%include tutorials-block.html title=site.data.texts.tutorials items=tutorials%}
     {%else%}
-      <span class="text-info font-size-xx-small">{{site.data.texts.no_tutorials}}</span>
+    <span class="text-info font-size-xx-small">{{site.data.texts.no_tutorials}}</span>
     {%endif%}
   </section>
 </div>

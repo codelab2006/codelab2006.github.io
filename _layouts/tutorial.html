@@ -7,9 +7,9 @@ logo: Codelab
     {%assign chapters = site.tutorials | where_exp: "item", "item.tutorial == page.name" | sort: "order"%}
     {%assign size = chapters | size%}
     {%if size > 0%}
-      {%include chapters-block.html title=site.data.texts.chapters items=chapters%}
+    {%include chapters-block.html title=site.data.texts.chapters items=chapters%}
     {%else%}
-      <span class="text-info font-size-xx-small">{{site.data.texts.no_chapters}}</span>
+    <span class="text-info font-size-xx-small">{{site.data.texts.no_chapters}}</span>
     {%endif%}
   </section>
 </div>
