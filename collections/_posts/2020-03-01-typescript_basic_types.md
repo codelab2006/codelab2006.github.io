@@ -42,8 +42,8 @@ Number 类型存储的数超过了 MAX_SAFE_INTEGER 或者 MIN_SAFE_INTEGER 之�
 ### String
 
 ```typescript
-let firstName: string = "Yongjian";
-let lastName: string = 'Huang';
+let firstName: string = 'Yongjian';
+let lastName: string = "Huang";
 let fullName: string = `${firstName} ${lastName}`;
 
 console.log('firstName:', firstName); // firstName: Yongjian
@@ -77,5 +77,22 @@ let big2: bigint = 100.2n; // error
 
 ### Symbol
 
+Symbol 类型的值是不变且唯一的，可以作为属性名使用。
+
 ```typescript
+let symbol = Symbol();
+let symbolKey = Symbol('key');
+
+const x = Symbol();
+class C {
+  [x]: string = 'Hello';
+}
+const c: C = new C();
+console.log(c[x]); // Hello
+
+const o = Symbol();
+let obj = {
+  [o]: 'World'
+};
+console.log(obj[o]); // World
 ```
