@@ -6,7 +6,7 @@
   h5,
   h6 {
     margin: {
-      top: 16px;
+      top: 48px;
       bottom: 16px;
     }
   }
@@ -15,6 +15,30 @@
     font-weight: bold;
     background-color: $code-background-color;
     color: $code-color;
+    code {
+      font-size: small;
+      font-weight: initial;
+      .kd {
+        color: lime;
+      }
+      .nb {
+        color: #50c8af;
+      }
+      .p,
+      .o {
+        color: #ffffff;
+      }
+      .nx {
+        color: #7de2f0;
+      }
+      .s1,
+      .s2 {
+        color: #cd9176;
+      }
+      .c1 {
+        color: #529855;
+      }
+    }
   }
 }
 #_404 {
