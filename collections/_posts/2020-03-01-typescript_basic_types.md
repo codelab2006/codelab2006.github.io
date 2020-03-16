@@ -53,7 +53,7 @@ console.log('fullName:', fullName); // fullName: Yongjian Huang
 
 ### Null 和 Undefined
 
-TypeScript 中 null 和 undefined 有它们自己的类型。
+TypeScript 中 null 和 undefined 有它们自己的类型。null 和 undefined 类型是其他类型的子类，意味着你可以将 null 和 undefined 赋值给其他任何类型。注意当 --strictNullChecks 标记被使用时，null 和 undefined 只能被赋值给 any 和他们自己的类型。
 
 ```typescript
 let n: null = null;
