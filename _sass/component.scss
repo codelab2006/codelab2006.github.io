@@ -11,11 +11,14 @@
     }
   }
   .highlighter-rouge {
-    padding: 16px;
+    padding: 0 8px;
     font-weight: bold;
     background-color: $code-background-color;
     color: $code-color;
     code {
+      display: block;
+      overflow-x: auto;
+      padding: 16px;
       font-size: small;
       font-weight: initial;
       .kd {
