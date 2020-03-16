@@ -14,10 +14,14 @@
     font-weight: bold;
     background-color: $code-background-color;
     color: $code-color;
+    pre {
+      margin: 0;
+    }
+    padding: 8px 8px 2px 8px;
     code {
+      padding-bottom: 6px;
       display: block;
       overflow-x: auto;
-      padding: 8px;
       font-size: small;
       font-weight: initial;
       .kd {
