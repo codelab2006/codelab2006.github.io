@@ -113,3 +113,58 @@ interface Indexable2 {
   [index: string]: Child;
 }
 ```
+
+### Class 类型
+
+Class 类型类似于其他语言中的 Class 类型。
+
+#### 实现接口
+
+```typescript
+interface Renderable {
+  color: string;
+  render(): void;
+}
+
+class Picture implements Renderable {
+  color: string = 'red';
+  render(): void { throw new Error("Method not implemented."); }
+}
+```
+
+#### 类的静态端和实例端
+
+```typescript
+interface RenderableConstructor {
+  new(color: string): Renderable;
+}
+
+interface Renderable {
+  color: string;
+  render(): void;
+}
+
+class Background implements Renderable {
+  color: string = 'white';
+  render(): void { throw new Error("Method not implemented."); }
+  constructor(color: string) {
+    this.color = color;
+  }
+}
+
+class Picture implements Renderable {
+  color: string = 'red';
+  render(): void { throw new Error("Method not implemented."); }
+  constructor(color: string) {
+    this.color = color;
+  }
+}
+
+function create(renderableConstructor: RenderableConstructor,
+  color: string): Renderable {
+  return new renderableConstructor(color);
+}
+
+let background: Renderable = create(Background, 'black');
+let picture: Picture = create(Picture, 'white');
+```
