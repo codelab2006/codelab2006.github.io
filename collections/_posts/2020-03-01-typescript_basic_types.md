@@ -194,6 +194,8 @@ function infiniteLoop(): never {
 object 是代表非原始类型的类型。
 
 ```typescript
+let o = { property: 'value' };
+let x = Object.create(o);
 ```
 
 ### Type assertions
