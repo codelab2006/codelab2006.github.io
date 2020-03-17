@@ -12,11 +12,58 @@ interface ShowableText {
 }
 
 function showText(o: ShowableText) {
-  console.log(o.v); // World
+  console.log(o.v);
 }
 
 let obj = { x: 123, y: 'Hello', z: true, v: 'World' };
-showText(obj);
+showText(obj); // World
 ```
 
-从上面的例子可以发现，虽然对象 obj 除了 v 属性以外，还有 x，y，z 属性，但是 showText 方法还是能接受 obj 作为参数。因为 showText 函数接受的参数的“形状”只需要有一个 v 属性。
+从上面的例子可以发现，虽然对象 obj 除了 v 属性以外，还有 x，y，z 属性，但是 showText 方法还是能接受 obj 作为参数。因为 showText 函数接受的参数的“形状”只需要有一个 v 属性，而 obj 正好有这个属性。
+
+我们还可以使用匿名的接口
+
+```typescript
+function showText(o: { v: string }) {
+  console.log(o.v);
+}
+
+let o = { x: 123, y: 'Hello', z: true, v: 'World' };
+showText(o); // World
+let x = { x: 123, y: 'Hello', z: true };
+showText(x); // Error
+```
+
+### 可选的属性
+
+你可以在接口中声明可选的属性。
+
+```typescript
+interface Config {
+  xxx?: string;
+  ooo?: string;
+}
+function setConfig(c: Config): void {
+  // ...
+}
+setConfig({ xxx: 'xxx' });
+```
+
+### 只读属性
+
+你可以在接口中声明只读属性，只读属性只能在对象被创建的时候修改。
+
+```typescript
+interface Point {
+  readonly x: number;
+  readonly y: number;
+}
+let point: Point = { x: 2, y: 4 };
+point.x = 200; // Error
+```
+
+### 方法类型
+
+```typescript
+
+```
