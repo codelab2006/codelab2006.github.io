@@ -128,7 +128,7 @@ interface Renderable {
 
 class Picture implements Renderable {
   color: string = 'red';
-  render(): void { throw new Error("Method not implemented."); }
+  render(): void { throw new Error('Method not implemented.'); }
 }
 ```
 
@@ -161,7 +161,7 @@ class Picture implements Renderable {
 }
 
 function create(renderableConstructor: RenderableConstructor,
-  color: string): Renderable {
+                color: string): Renderable {
   return new renderableConstructor(color);
 }
 
@@ -179,14 +179,14 @@ picture.render();
 interface Shape { color: string; }
 interface Square extends Shape { sideLength: number; }
 let square = {} as Square;
-square.color = "blue";
+square.color = 'blue';
 square.sideLength = 10;
 
 interface Shape { color: string; }
 interface PenStroke { penWidth: number; }
 interface Square extends Shape, PenStroke { sideLength: number; }
 let square = {} as Square;
-square.color = "blue";
+square.color = 'blue';
 square.sideLength = 10;
 square.penWidth = 5.0;
 ```
