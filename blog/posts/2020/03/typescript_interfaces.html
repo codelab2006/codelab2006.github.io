@@ -72,7 +72,7 @@
 
 <span class="kd">class</span> <span class="nx">Picture</span> <span class="kr">implements</span> <span class="nx">Renderable</span> <span class="p">{</span>
   <span class="nl">color</span><span class="p">:</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">red</span><span class="dl">'</span><span class="p">;</span>
-  <span class="nx">render</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="dl">"</span><span class="s2">Method not implemented.</span><span class="dl">"</span><span class="p">);</span> <span class="p">}</span>
+  <span class="nx">render</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Method not implemented.</span><span class="dl">'</span><span class="p">);</span> <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div><h4 id="类的静态端和实例端">类的静态端和实例端</h4><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">interface</span> <span class="nx">RenderableConstructor</span> <span class="p">{</span>
   <span class="k">new</span><span class="p">(</span><span class="nx">color</span><span class="p">:</span> <span class="nx">string</span><span class="p">):</span> <span class="nx">Renderable</span><span class="p">;</span>
@@ -100,7 +100,7 @@
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">create</span><span class="p">(</span><span class="na">renderableConstructor</span><span class="p">:</span> <span class="nx">RenderableConstructor</span><span class="p">,</span>
-  <span class="na">color</span><span class="p">:</span> <span class="nx">string</span><span class="p">):</span> <span class="nx">Renderable</span> <span class="p">{</span>
+                <span class="na">color</span><span class="p">:</span> <span class="nx">string</span><span class="p">):</span> <span class="nx">Renderable</span> <span class="p">{</span>
   <span class="k">return</span> <span class="k">new</span> <span class="nx">renderableConstructor</span><span class="p">(</span><span class="nx">color</span><span class="p">);</span>
 <span class="p">}</span>
 
@@ -111,14 +111,14 @@
 </code></pre></div></div><h3 id="扩展接口">扩展接口</h3><p>一个接口可以扩展另一个接口</p><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">interface</span> <span class="nx">Shape</span> <span class="p">{</span> <span class="nl">color</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span> <span class="p">}</span>
 <span class="kr">interface</span> <span class="nx">Square</span> <span class="kd">extends</span> <span class="nx">Shape</span> <span class="p">{</span> <span class="nl">sideLength</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span> <span class="p">}</span>
 <span class="kd">let</span> <span class="nx">square</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">as</span> <span class="nx">Square</span><span class="p">;</span>
-<span class="nx">square</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">blue</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">square</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">blue</span><span class="dl">'</span><span class="p">;</span>
 <span class="nx">square</span><span class="p">.</span><span class="nx">sideLength</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
 
 <span class="kr">interface</span> <span class="nx">Shape</span> <span class="p">{</span> <span class="nl">color</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span> <span class="p">}</span>
 <span class="kr">interface</span> <span class="nx">PenStroke</span> <span class="p">{</span> <span class="nl">penWidth</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span> <span class="p">}</span>
 <span class="kr">interface</span> <span class="nx">Square</span> <span class="kd">extends</span> <span class="nx">Shape</span><span class="p">,</span> <span class="nx">PenStroke</span> <span class="p">{</span> <span class="nl">sideLength</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span> <span class="p">}</span>
 <span class="kd">let</span> <span class="nx">square</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">as</span> <span class="nx">Square</span><span class="p">;</span>
-<span class="nx">square</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">blue</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">square</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">blue</span><span class="dl">'</span><span class="p">;</span>
 <span class="nx">square</span><span class="p">.</span><span class="nx">sideLength</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
 <span class="nx">square</span><span class="p">.</span><span class="nx">penWidth</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">;</span>
 </code></pre></div></div><h3 id="混合类型">混合类型</h3><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">interface</span> <span class="nx">Counter</span> <span class="p">{</span>
