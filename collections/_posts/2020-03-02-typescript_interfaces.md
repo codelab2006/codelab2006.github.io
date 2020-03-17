@@ -146,7 +146,7 @@ interface Renderable {
 
 class Background implements Renderable {
   color: string = 'white';
-  render(): void { throw new Error("Method not implemented."); }
+  render(): void { console.log('color', this.color); }
   constructor(color: string) {
     this.color = color;
   }
@@ -154,7 +154,7 @@ class Background implements Renderable {
 
 class Picture implements Renderable {
   color: string = 'red';
-  render(): void { throw new Error("Method not implemented."); }
+  render(): void { console.log('color', this.color); }
   constructor(color: string) {
     this.color = color;
   }
@@ -167,4 +167,6 @@ function create(renderableConstructor: RenderableConstructor,
 
 let background: Renderable = create(Background, 'black');
 let picture: Picture = create(Picture, 'white');
+background.render();
+picture.render();
 ```
