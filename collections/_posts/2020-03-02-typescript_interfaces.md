@@ -64,6 +64,52 @@ point.x = 200; // Error
 
 ### 方法类型
 
-```typescript
+可以使用接口描述一个方法类型。
 
+```typescript
+interface Callback {
+  (x: string, o: number): void;
+}
+
+let callback: Callback = (xxx: string, ooo: number): void => {
+  console.log(xxx, ooo);
+};
+callback('abc', 123); // abc 123
+```
+
+### 可索引类型
+
+```typescript
+interface StringIndexable {
+  [index: number]: string;
+}
+
+let si: StringIndexable = ['AAA', 'BBB', 'CCC'];
+console.log(si[0], si[1], si[2]);
+
+interface NumberIndexable {
+  [index: string]: number;
+}
+
+let ni: NumberIndexable = { 'AAA': 1, 'BBB': 2, 'CCC': 3 };
+console.log(ni['AAA'], ni['BBB'], ni['CCC']);
+```
+
+索引的类型只能是 number 或 string 类型。如果 number 和 string 索引同时存在，则 number 索引的值类型必须是 string 索引的值类型的子类。
+
+```typescript
+class Parent {
+  p: string = 'Hello';
+}
+class Child extends Parent {
+  c: string = 'World';
+}
+interface Indexable1 {
+  [index: number]: Child;
+  [index: string]: Parent;
+}
+interface Indexable2 {
+  [index: number]: Parent; // Error
+  [index: string]: Child;
+}
 ```
