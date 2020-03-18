@@ -82,10 +82,10 @@
 <span class="nx">notSure</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span> <span class="c1">// number</span>
 <span class="nx">notSure</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">maybe a string</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// string</span>
 <span class="nx">notSure</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">// boolean</span>
-</code></pre></div></div><h4 id="void">Void</h4><p>通常 void 类型在声明一个没有返回值的函数时使用。</p><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">fun</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+</code></pre></div></div><h4 id="void">Void</h4><p>通常 void 类型在声明一个没有返回值的方法时使用。</p><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">fun</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">...</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div></div><h4 id="never">Never</h4><p>通常 never 类型用来表示抛出异常的函数或永远无法返回的函数的返回类型。</p><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">throwError</span><span class="p">(</span><span class="nx">message</span><span class="p">:</span> <span class="nx">string</span><span class="p">):</span> <span class="nx">never</span> <span class="p">{</span>
+</code></pre></div></div><h4 id="never">Never</h4><p>通常 never 类型用来表示抛出异常的方法或永远无法返回的方法的返回类型。</p><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">throwError</span><span class="p">(</span><span class="nx">message</span><span class="p">:</span> <span class="nx">string</span><span class="p">):</span> <span class="nx">never</span> <span class="p">{</span>
   <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
 <span class="p">}</span>
 
