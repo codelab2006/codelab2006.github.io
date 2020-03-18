@@ -19,7 +19,7 @@ let obj = { x: 123, y: 'Hello', z: true, v: 'World' };
 showText(obj); // World
 ```
 
-从上面的例子可以发现，虽然对象 obj 除了 v 属性以外，还有 x，y，z 属性，但是 showText 方法还是能接受 obj 作为参数。因为 showText 函数接受的参数的“形状”只需要有一个 v 属性，而 obj 正好有这个属性。
+从上面的例子可以发现，虽然对象 obj 除了 v 属性以外，还有 x，y，z 属性，但是 showText 方法还是能接受 obj 作为参数。因为 showText 方法接受的参数的“形状”只需要有一个 v 属性，而 obj 正好有这个属性。
 
 我们还可以使用匿名的接口
 

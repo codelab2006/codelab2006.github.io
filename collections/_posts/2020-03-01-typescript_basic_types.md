@@ -167,7 +167,7 @@ notSure = true; // boolean
 
 #### Void
 
-通常 void 类型在声明一个没有返回值的函数时使用。
+通常 void 类型在声明一个没有返回值的方法时使用。
 
 ```typescript
 function fun(): void {
@@ -177,7 +177,7 @@ function fun(): void {
 
 #### Never
 
-通常 never 类型用来表示抛出异常的函数或永远无法返回的函数的返回类型。
+通常 never 类型用来表示抛出异常的方法或永远无法返回的方法的返回类型。
 
 ```typescript
 function throwError(message: string): never {
