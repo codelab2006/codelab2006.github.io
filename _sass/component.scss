@@ -10,6 +10,10 @@
       bottom: 16px;
     }
   }
+  ul {
+    margin: 16px 0;
+    list-style: inside;
+  }
   .highlighter-rouge {
     font-weight: bold;
     background-color: $code-background-color;
