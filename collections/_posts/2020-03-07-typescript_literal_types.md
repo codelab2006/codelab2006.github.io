@@ -2,12 +2,14 @@
 title: TypeScript 笔记七（字面类型）
 ---
 
+### 字面类型
+
 ```typescript
 let helloWorld = 'Hello World'; // string type
 const HELLO_WORLD = 'Hello World'; // 'Hello World' type
 ```
 
-### 字符串文字类型
+### 字符串字面类型
 
 ```typescript
 type Easing = 'ease-in' | 'ease-out' | 'ease-in-out';
@@ -18,7 +20,7 @@ animate('ease-in-out');
 animate('xxx'); // Error
 ```
 
-### 数值文字类型
+### 数字字面类型
 
 ```typescript
 let v1: 1 | 2 | 3 | 4 = 1;
