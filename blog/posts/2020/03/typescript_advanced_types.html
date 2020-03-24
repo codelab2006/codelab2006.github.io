@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><title> TypeScript 笔记九（高级类型） - 黄永健的个人站点 </title><link rel="stylesheet" href="/assets/css/icons.css"/><link rel="stylesheet" href="/assets/css/normalize.css"/><link rel="stylesheet" href="/assets/css/styles.css"/></head><body class="d-flex flex-direction-column"><header class="p-relative"><div class="d-flex h-4 px-8px bg-primary text-light align-items-center justify-content-space-between"><h1>网络日志</h1><button id="nav-toggler" class="icon-nav-toggler"></button></div><div id="nav-container" class="bg-primary px-8px align-items-center"><nav><ul class="d-flex"><li class="mx-16px my-16px"><a class="text-light" href="/">首页</a></li><li class="mx-16px my-16px"><a class="text-light" href="/blog">网络日志</a></li><li class="mx-16px my-16px"><a class="text-light" href="/codelab">Codelab</a></li><li class="mx-16px my-16px"><a class="text-light" href="/about.html">关于作者</a></li></ul></nav></div></header><main class="flex-grow-1"><div class="d-flex justify-content-center my-48px px-8px"><article class="container"><h2 class="p-6px bb-1px"> TypeScript 笔记九（高级类型） </h2><div class="my-16px"><span class="d-block p-6px">作者：黄永健</span><span class="d-block p-6px">日期：2020-03-09</span></div><div class="my-32px p-6px content"><h3 id="使用-in">使用 in</h3><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">n</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">aaa</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">m</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">bbb</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">o</span> <span class="o">=</span> <span class="p">{</span> <span class="na">aaa</span><span class="p">:</span> <span class="mi">123</span> <span class="p">};</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="k">in</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">m</span> <span class="k">in</span> <span class="nx">o</span><span class="p">))</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">World</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div><h3 id="使用-typeof">使用 typeof</h3><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">padLeft</span><span class="p">(</span><span class="nx">value</span><span class="p">:</span> <span class="nx">string</span><span class="p">,</span> <span class="nx">padding</span><span class="p">:</span> <span class="nx">string</span> <span class="o">|</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">padding</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">number</span><span class="dl">'</span><span class="p">)</span> <span class="k">return</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">padding</span> <span class="o">+</span> <span class="mi">1</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="dl">'</span><span class="s1"> </span><span class="dl">'</span><span class="p">)</span> <span class="o">+</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">padding</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">string</span><span class="dl">'</span><span class="p">)</span> <span class="k">return</span> <span class="nx">padding</span> <span class="o">+</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">`Expected string or number, got '</span><span class="p">${</span><span class="nx">padding</span><span class="p">}</span><span class="s2">'.`</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+  <span class="k">typeof</span> <span class="mi">123</span><span class="p">,</span>
+  <span class="k">typeof</span> <span class="dl">'</span><span class="s1">abc</span><span class="dl">'</span><span class="p">,</span>
+  <span class="k">typeof</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="k">typeof</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="k">typeof</span> <span class="kc">undefined</span><span class="p">,</span>
+  <span class="k">typeof</span> <span class="p">[],</span>
+  <span class="k">typeof</span> <span class="p">{},</span>
+  <span class="k">typeof</span> <span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{})</span>
+<span class="p">);</span>
+<span class="c1">// number string boolean object undefined object object function</span>
+</code></pre></div></div><h3 id="使用-instanceof">使用 instanceof</h3><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">interface</span> <span class="nx">Padder</span> <span class="p">{</span>
+  <span class="nx">getPaddingString</span><span class="p">():</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nx">SpaceRepeatingPadder</span> <span class="kr">implements</span> <span class="nx">Padder</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="nx">numSpaces</span><span class="p">:</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="nx">getPaddingString</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">Array</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">numSpaces</span> <span class="o">+</span> <span class="mi">1</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="dl">'</span><span class="s1"> </span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nx">StringPadder</span> <span class="kr">implements</span> <span class="nx">Padder</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="nx">value</span><span class="p">:</span> <span class="nx">string</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="nx">getPaddingString</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getRandomPadder</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.5</span>
+    <span class="p">?</span> <span class="k">new</span> <span class="nx">SpaceRepeatingPadder</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="p">:</span> <span class="k">new</span> <span class="nx">StringPadder</span><span class="p">(</span><span class="dl">'</span><span class="s1">  </span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">let</span> <span class="nx">padder</span><span class="p">:</span> <span class="nx">Padder</span> <span class="o">=</span> <span class="nx">getRandomPadder</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">padder</span> <span class="k">instanceof</span> <span class="nx">SpaceRepeatingPadder</span><span class="p">)</span> <span class="nx">padder</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">padder</span> <span class="k">instanceof</span> <span class="nx">StringPadder</span><span class="p">)</span> <span class="nx">padder</span><span class="p">;</span>
+</code></pre></div></div><h3 id="类型别名">类型别名</h3><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">type</span> <span class="nx">Name</span> <span class="o">=</span> <span class="nx">string</span><span class="p">;</span>
+<span class="nx">type</span> <span class="nx">NameResolver</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">string</span><span class="p">;</span>
+<span class="nx">type</span> <span class="nx">NameOrResolver</span> <span class="o">=</span> <span class="nx">Name</span> <span class="o">|</span> <span class="nx">NameResolver</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">getName</span><span class="p">(</span><span class="nx">n</span><span class="p">:</span> <span class="nx">NameOrResolver</span><span class="p">):</span> <span class="nx">Name</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">n</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">string</span><span class="dl">'</span><span class="p">)</span> <span class="k">return</span> <span class="nx">n</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">return</span> <span class="nx">n</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="nx">type</span> <span class="nx">Container</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span> <span class="na">value</span><span class="p">:</span> <span class="nx">T</span> <span class="p">};</span>
+<span class="nx">type</span> <span class="nx">Tree</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">value</span><span class="p">:</span> <span class="nx">T</span><span class="p">;</span>
+  <span class="nl">left</span><span class="p">:</span> <span class="nx">Tree</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">;</span>
+  <span class="nl">right</span><span class="p">:</span> <span class="nx">Tree</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">type</span> <span class="nx">LinkedList</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nx">T</span> <span class="o">&amp;</span> <span class="p">{</span> <span class="na">next</span><span class="p">:</span> <span class="nx">LinkedList</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="p">};</span>
+<span class="kr">interface</span> <span class="nx">Person</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="na">people</span><span class="p">:</span> <span class="nx">LinkedList</span><span class="o">&lt;</span><span class="nx">Person</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">people</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">people</span><span class="p">.</span><span class="nx">next</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">people</span><span class="p">.</span><span class="nx">next</span><span class="p">.</span><span class="nx">next</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">people</span><span class="p">.</span><span class="nx">next</span><span class="p">.</span><span class="nx">next</span><span class="p">.</span><span class="nx">next</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">Person</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">()</span> <span class="p">{}</span>
+<span class="p">}</span>
+<span class="nx">type</span> <span class="nx">P</span> <span class="o">=</span> <span class="nx">Person</span><span class="p">;</span>
+<span class="kd">let</span> <span class="na">p</span><span class="p">:</span> <span class="nx">P</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">();</span>
+</code></pre></div></div><h3 id="索引类型">索引类型</h3><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">pluck</span><span class="o">&lt;</span><span class="nx">T</span><span class="p">,</span> <span class="nx">K</span> <span class="kd">extends</span> <span class="nx">keyof</span> <span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">o</span><span class="p">:</span> <span class="nx">T</span><span class="p">,</span> <span class="nx">propertyNames</span><span class="p">:</span> <span class="nx">K</span><span class="p">[]):</span> <span class="nx">T</span><span class="p">[</span><span class="nx">K</span><span class="p">][]</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">propertyNames</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">n</span> <span class="o">=&gt;</span> <span class="nx">o</span><span class="p">[</span><span class="nx">n</span><span class="p">]);</span>
+<span class="p">}</span>
+<span class="kr">interface</span> <span class="nx">Car</span> <span class="p">{</span>
+  <span class="nl">manufacturer</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nl">model</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nl">year</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">let</span> <span class="nx">taxi</span><span class="p">:</span> <span class="nx">Car</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">manufacturer</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Toyota</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">model</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Camry</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">year</span><span class="p">:</span> <span class="mi">2014</span>
+<span class="p">};</span>
+<span class="kd">let</span> <span class="nx">makeAndModel</span><span class="p">:</span> <span class="nx">string</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">pluck</span><span class="p">(</span><span class="nx">taxi</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">manufacturer</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">model</span><span class="dl">'</span><span class="p">]);</span>
+<span class="kd">let</span> <span class="nx">modelYear</span> <span class="o">=</span> <span class="nx">pluck</span><span class="p">(</span><span class="nx">taxi</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">model</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">year</span><span class="dl">'</span><span class="p">]);</span>
+</code></pre></div></div><h3 id="映射类型">映射类型</h3><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">interface</span> <span class="nx">PersonPartial</span> <span class="p">{</span>
+  <span class="nl">name</span><span class="p">?:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nl">age</span><span class="p">?:</span> <span class="nx">number</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">type</span> <span class="nx">Partial</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">[</span><span class="nx">P</span> <span class="k">in</span> <span class="nx">keyof</span> <span class="nx">T</span><span class="p">]?:</span> <span class="nx">T</span><span class="p">[</span><span class="nx">P</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="kr">interface</span> <span class="nx">PersonReadonly</span> <span class="p">{</span>
+  <span class="nx">readonly</span> <span class="na">name</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nx">readonly</span> <span class="na">age</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">type</span> <span class="nx">Readonly</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">readonly</span> <span class="p">[</span><span class="nx">P</span> <span class="k">in</span> <span class="nx">keyof</span> <span class="nx">T</span><span class="p">]:</span> <span class="nx">T</span><span class="p">[</span><span class="nx">P</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="nx">type</span> <span class="nx">Keys</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">option1</span><span class="dl">'</span> <span class="o">|</span> <span class="dl">'</span><span class="s1">option2</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">type</span> <span class="nx">Flags</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="nx">K</span> <span class="k">in</span> <span class="nx">Keys</span><span class="p">]:</span> <span class="nx">boolean</span> <span class="p">};</span>
+<span class="nx">type</span> <span class="nx">Flags</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">option1</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">;</span>
+  <span class="nl">option2</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">type</span> <span class="nx">Nullable</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="nx">P</span> <span class="k">in</span> <span class="nx">keyof</span> <span class="nx">T</span><span class="p">]:</span> <span class="nx">T</span><span class="p">[</span><span class="nx">P</span><span class="p">]</span> <span class="o">|</span> <span class="kc">null</span> <span class="p">};</span>
+<span class="nx">type</span> <span class="nx">Partial</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">{</span> <span class="p">[</span><span class="nx">P</span> <span class="k">in</span> <span class="nx">keyof</span> <span class="nx">T</span><span class="p">]?:</span> <span class="nx">T</span><span class="p">[</span><span class="nx">P</span><span class="p">]</span> <span class="p">};</span>
+</code></pre></div></div><h3 id="条件类型">条件类型</h3><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// TODO... ...</span>
+</code></pre></div></div></div></article></div></main><footer class="min-h-16 px-8px bg-primary p-relative"><div id="footer-panel" class="bg-primary px-8px"></div></footer><script src="/assets/js/script.js"></script></body></html>
