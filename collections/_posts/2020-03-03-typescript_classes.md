@@ -17,7 +17,7 @@ TypeScript 中的类和其他面向对象语言中的类有很多相似之处。
 
 ```typescript
 class O {
-  static readonly clazz: string = "Object class";
+  static readonly clazz: string = 'Object class';
 }
 // O.clazz = 'ABC'; // Error
 

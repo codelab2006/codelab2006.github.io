@@ -7,7 +7,7 @@ title: TypeScript 笔记八（Unions）
 ```typescript
 let v: number | string | boolean;
 v = 100;
-v = "abc";
+v = 'abc';
 v = true;
 v = []; // Error
 
