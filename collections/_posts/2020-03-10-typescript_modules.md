@@ -109,6 +109,31 @@ let v = new validator.ZipCodeValidator();
 
 ### export = and import = require()
 
+TypeScript 支持 export = 和 import = require() 语法。
+
 ```typescript
-// TODO ...
+// ZipCodeValidator.ts
+let numberRegexp = /^[0-9]+$/;
+class ZipCodeValidator {
+  isAcceptable(s: string) {
+    return s.length === 5 && numberRegexp.test(s);
+  }
+}
+export = ZipCodeValidator;
+
+// Test.ts
+import zip = require('./ZipCodeValidator');
+let strings = ['Hello', '98052', '101'];
+let validator = new zip();
+strings.forEach(s => {
+  console.log(
+    `'${s}' - ${validator.isAcceptable(s) ? 'matches' : 'does not match'}`
+  );
+});
 ```
+
+### 可选模块加载和其他高级加载方案
+
+### 使用其他 JavaScript 库
+
+### 结构模块指南
