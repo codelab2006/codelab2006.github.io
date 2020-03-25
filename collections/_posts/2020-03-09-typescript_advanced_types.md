@@ -155,5 +155,5 @@ type Partial<T> = { [P in keyof T]?: T[P] };
 ### 条件类型
 
 ```typescript
-// TODO... ...
+// TODO ...
 ```
