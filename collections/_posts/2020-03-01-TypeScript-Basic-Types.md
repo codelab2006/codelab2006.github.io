@@ -42,7 +42,7 @@ let list2: Array<number> = [1, 2, 3];
 
 ### Tuple
 
-元组类型允许您用固定数量的元素表示数组。
+元组类型允许你用固定数量的元素表示数组。
 
 ```typescript
 let x: [string, number];
