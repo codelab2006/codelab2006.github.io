@@ -144,7 +144,7 @@ const o: object = {};
 
 ### Type assertions
 
-TypeScript 中的类型断言类似其他语言中的强制类型转换，只是被编译时使用。有两种写法，但是在使用了 JSX 时，只能使用第二种写法。
+TypeScript 中的类型断言类似其他语言中的强制类型转换，只被编译时使用。有两种写法，但是在使用了 JSX 时，只能使用第二种写法。
 
 ```typescript
 let someValue: any = "this is a string";
