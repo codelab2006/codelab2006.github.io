@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Hello, web components</title>
+  </head>
+  <body>
+    <popup-message data-message="Hello web components"></popup-message>
+    <script>
+      class PopupMessage extends HTMLElement {
+        constructor() {
+          super();
+
+          const shadow = this.attachShadow({ mode: "open" });
+          const container = this.createContainer();
+          const icon = this.createIcon();
+          const message = this.createMessage();
+
+          container.appendChild(icon);
+          container.appendChild(message);
+
+          const style = document.createElement("style");
+          style.textContent =
+            ".container { box-sizing: border-box; display: flex; border: 1px solid black; width: 300px; height: 100px; padding: 10px; align-items: center; }" +
+            ".icon { width: 64px; height: 64px; background-color: lime; }" +
+            ".message { flex-grow: 1; text-align: center; }";
+
+          shadow.appendChild(style);
+          shadow.appendChild(container);
+        }
+
+        createContainer() {
+          const container = document.createElement("div");
+          container.setAttribute("class", "container");
+          return container;
+        }
+
+        createIcon() {
+          const icon = document.createElement("div");
+          icon.setAttribute("class", "icon");
+          return icon;
+        }
+
+        createMessage() {
+          const message = document.createElement("span");
+          message.setAttribute("class", "message");
+          message.textContent = this.getAttribute("data-message");
+          return message;
+        }
+      }
+
+      window.customElements.define("popup-message", PopupMessage);
+    </script>
+  </body>
+</html>

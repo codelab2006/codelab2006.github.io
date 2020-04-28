@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><title> Web Components 实例教程 - 黄永健的个人站点 </title><link rel="stylesheet" href="/assets/css/icons.css"/><link rel="stylesheet" href="/assets/css/normalize.css"/><link rel="stylesheet" href="/assets/css/styles.css"/></head><body class="d-flex flex-direction-column"><header class="p-relative"><div class="d-flex h-4 px-8px bg-primary text-light align-items-center justify-content-space-between"><div class="font-size-2em">网络日志</div><button id="nav-toggler" class="icon-nav-toggler"></button></div><div id="nav-container" class="bg-primary px-8px align-items-center"><nav><ul class="d-flex"><li class="mx-16px my-16px"><a class="text-light" href="/">首页</a></li><li class="mx-16px my-16px"><a class="text-light" href="/blog">网络日志</a></li><li class="mx-16px my-16px"><a class="text-light" href="/codelab">Codelab</a></li><li class="mx-16px my-16px"><a class="text-light" href="/about.html">关于作者</a></li></ul></nav></div></header><main class="flex-grow-1"><div class="d-flex justify-content-center my-48px px-8px"><article class="container"><h1 class="p-6px bb-1px"> Web Components 实例教程 </h1><div class="my-16px"><span class="d-block p-6px">作者：黄永健</span><span class="d-block p-6px">日期：2020-03-01</span></div><div class="my-32px p-6px content"><h2 id="一-概念">一. 概念</h2><p>当我们在使用 Angular，React，Vue 等前端框架时，我们通常会创建可重用的组件，使用这些组件来组成我们的应用。而 Web Components 则是另一个类似的技术，浏览器直接提供与创建可重用组件相关的 API，我们使用这些 API 来创建可重用的原生组件。Web Components 由三部分组成：</p><ul><li><strong>自定义元素（Custom elements）</strong>一套 JavaScript API 集合，用来定义自定义元素和行为。</li><li><strong>影子 DOM（Shadow DOM）</strong>一套 JavaScript API 集合，用来封装影子 DOM 树，并将其添加到元素上。</li><li><strong>HTML 模板（HTML templates）</strong>使用 &lt;template&gt; 和 &lt;slot&gt; 元素编写不在呈现页面中显示的标记模板。然后它们可以作为自定义元素结构的基础被多次重用。</li></ul><h2 id="二-举个例子">二. 举个例子</h2><div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Hello, web components<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;popup-message</span> <span class="na">data-message=</span><span class="s">"Hello web components"</span><span class="nt">&gt;&lt;/popup-message&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+      <span class="kd">class</span> <span class="nx">PopupMessage</span> <span class="kd">extends</span> <span class="nx">HTMLElement</span> <span class="p">{</span>
+        <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+          <span class="k">super</span><span class="p">();</span>
+
+          <span class="kd">const</span> <span class="nx">shadow</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">attachShadow</span><span class="p">({</span> <span class="na">mode</span><span class="p">:</span> <span class="dl">"</span><span class="s2">open</span><span class="dl">"</span> <span class="p">});</span>
+          <span class="kd">const</span> <span class="nx">container</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">createContainer</span><span class="p">();</span>
+          <span class="kd">const</span> <span class="nx">icon</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">createIcon</span><span class="p">();</span>
+          <span class="kd">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">createMessage</span><span class="p">();</span>
+
+          <span class="nx">container</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">icon</span><span class="p">);</span>
+          <span class="nx">container</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+
+          <span class="kd">const</span> <span class="nx">style</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">style</span><span class="dl">"</span><span class="p">);</span>
+          <span class="nx">style</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span>
+            <span class="dl">"</span><span class="s2">.container { box-sizing: border-box; display: flex; border: 1px solid black; width: 300px; height: 100px; padding: 10px; align-items: center; }</span><span class="dl">"</span> <span class="o">+</span>
+            <span class="dl">"</span><span class="s2">.icon { width: 64px; height: 64px; background-color: lime; }</span><span class="dl">"</span> <span class="o">+</span>
+            <span class="dl">"</span><span class="s2">.message { flex-grow: 1; text-align: center; }</span><span class="dl">"</span><span class="p">;</span>
+
+          <span class="nx">shadow</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">style</span><span class="p">);</span>
+          <span class="nx">shadow</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">container</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nx">createContainer</span><span class="p">()</span> <span class="p">{</span>
+          <span class="kd">const</span> <span class="nx">container</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">);</span>
+          <span class="nx">container</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">class</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">container</span><span class="dl">"</span><span class="p">);</span>
+          <span class="k">return</span> <span class="nx">container</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nx">createIcon</span><span class="p">()</span> <span class="p">{</span>
+          <span class="kd">const</span> <span class="nx">icon</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">);</span>
+          <span class="nx">icon</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">class</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">icon</span><span class="dl">"</span><span class="p">);</span>
+          <span class="k">return</span> <span class="nx">icon</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nx">createMessage</span><span class="p">()</span> <span class="p">{</span>
+          <span class="kd">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">span</span><span class="dl">"</span><span class="p">);</span>
+          <span class="nx">message</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">class</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">message</span><span class="dl">"</span><span class="p">);</span>
+          <span class="nx">message</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">data-message</span><span class="dl">"</span><span class="p">);</span>
+          <span class="k">return</span> <span class="nx">message</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+
+      <span class="nb">window</span><span class="p">.</span><span class="nx">customElements</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">popup-message</span><span class="dl">"</span><span class="p">,</span> <span class="nx">PopupMessage</span><span class="p">);</span>
+    <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div><p>从上面的例子可以看到，我们创建了一个自定义元素 popup-message，并在 html 中使用这个新的元素。你可以在<a href="/assets/examples/Web-Components/popup-message.html">这里</a>查看实际的运行结果。</p><h2 id="三-自定义元素custom-elements">三. 自定义元素（Custom elements）</h2><h2 id="四-影子-domshadow-dom">四. 影子 DOM（Shadow DOM）</h2><h2 id="五-html-模板html-templates">五. HTML 模板（HTML templates）</h2></div></article></div></main><footer class="min-h-16 px-8px bg-primary p-relative"><div id="footer-panel" class="bg-primary px-8px"></div></footer><script src="/assets/js/script.js"></script></body></html>
