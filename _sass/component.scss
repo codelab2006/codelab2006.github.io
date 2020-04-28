@@ -1,4 +1,7 @@
 .content {
+  * {
+    line-height: 2rem;
+  }
   h1,
   h2,
   h3,
@@ -13,6 +16,9 @@
   ul {
     margin: 16px 0;
     list-style: inside;
+    li {
+      padding: 10px;
+    }
   }
   .highlighter-rouge {
     font-weight: bold;
