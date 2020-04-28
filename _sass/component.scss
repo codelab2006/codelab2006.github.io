@@ -21,6 +21,9 @@
     }
   }
   .highlighter-rouge {
+    * {
+      line-height: 1.2rem;
+    }
     font-weight: bold;
     background-color: $code-background-color;
     color: $code-color;
