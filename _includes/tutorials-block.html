@@ -1,11 +1,11 @@
-<h2 class="p-6px bb-1px">
+<h1 class="p-6px bb-1px">
   {{include.title}}
-</h2>
+</h1>
 <ul class="items-container">
   {%for item in include.items%}
   <li class="my-16px p-6px">
     <a class="d-block p-16px" href="{{item.url | remove: 'index'}}">
-      <h3 class="font-weight-initial font-size-large">{{item.title}}</h3>
+      <h2 class="font-weight-initial font-size-large">{{item.title}}</h2>
     </a>
   </li>
   {%endfor%}
