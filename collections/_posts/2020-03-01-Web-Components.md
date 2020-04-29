@@ -4,7 +4,7 @@ title: Web Components 实例教程
 
 ## 一. 概念
 
-当我们在使用 Angular，React，Vue 等前端框架时，我们通常会创建可重用的组件，使用这些组件来组成我们的应用。而 Web Components 则是另一个类似的技术，浏览器直接提供与创建可重用组件相关的 API，我们使用这些 API 来创建可重用的原生组件。Web Components 由三部分组成：
+Web Components 是一套允许你创建可重用的自定义元素的技术。它由浏览器直接提供支持，不需要引入任何第三方框架。Web Components 由三部分组成：
 
 - **自定义元素（Custom elements）**一套 JavaScript API 集合，用来定义自定义元素和行为。
 - **影子 DOM（Shadow DOM）**一套 JavaScript API 集合，用来封装影子 DOM 树，并将其添加到元素上。
