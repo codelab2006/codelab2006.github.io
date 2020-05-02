@@ -429,3 +429,10 @@ Web Components 的另一个重要的功能是封装，而影子 DOM 就是实现
 ```
 
 你可以在[这里](/assets/examples/Web-Components/html-templates-slot.html)查看实际的运行结果。
+
+## 参考链接
+
+- [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
+- [Using custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements)
+- [Using shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
+- [Using templates and slots](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_templates_and_slots)
