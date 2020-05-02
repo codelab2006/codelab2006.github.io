@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Hello, web components</title>
+  </head>
+  <body>
+    <span>请查看控制台...</span>
+    <tree-node-no-shadow></tree-node-no-shadow>
+    <tree-node-open></tree-node-open>
+    <tree-node-closed></tree-node-closed>
+    <script>
+      window.customElements.define(
+        "tree-node-no-shadow",
+        class extends HTMLElement {
+          constructor() {
+            super();
+            const div = document.createElement("div");
+            div.id = "noShadowId";
+            this.appendChild(div);
+          }
+        }
+      );
+      console.log(
+        `document.querySelector("#noShadowId"): ${document.querySelector(
+          "#noShadowId"
+        )}`
+      );
+      window.customElements.define(
+        "tree-node-open",
+        class extends HTMLElement {
+          constructor() {
+            super();
+            this.shadow = this.attachShadow({ mode: "open" });
+            const div = document.createElement("div");
+            div.id = "openId";
+            this.shadow.appendChild(div);
+          }
+        }
+      );
+      console.log(
+        `document.querySelector("#openId"): ${document.querySelector(
+          "#openId"
+        )}`
+      );
+      const treeNodeOpen = document.querySelector("tree-node-open").shadowRoot;
+      console.log(
+        `document.querySelector("tree-node-open").shadowRoot: ${treeNodeOpen}`
+      );
+      console.log(
+        `treeNodeOpen.querySelector("#openId"): ${treeNodeOpen.querySelector(
+          "#openId"
+        )}`
+      );
+      window.customElements.define(
+        "tree-node-closed",
+        class extends HTMLElement {
+          constructor() {
+            super();
+            this.shadow = this.attachShadow({ mode: "closed" });
+            const div = document.createElement("div");
+            div.id = "closedId";
+            this.shadow.appendChild(div);
+          }
+        }
+      );
+      console.log(
+        `document.querySelector("#closedId"): ${document.querySelector(
+          "#closedId"
+        )}`
+      );
+      console.log(
+        `document.querySelector("tree-node-closed").shadowRoot: ${
+          document.querySelector("tree-node-closed").shadowRoot
+        }`
+      );
+    </script>
+  </body>
+</html>

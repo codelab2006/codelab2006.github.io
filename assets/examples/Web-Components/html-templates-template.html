@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Hello, web components</title>
+  </head>
+  <body>
+    <template id="popup-message-tpl">
+      <style>
+        .container {
+          box-sizing: border-box;
+          display: flex;
+          border: 1px solid black;
+          width: 300px;
+          height: 100px;
+          padding: 10px;
+          align-items: center;
+        }
+        .icon {
+          width: 64px;
+          height: 64px;
+          background-color: lime;
+        }
+        .message {
+          flex-grow: 1;
+          text-align: center;
+        }
+      </style>
+      <div class="container">
+        <div class="icon"></div>
+        <span class="message"></span>
+      </div>
+    </template>
+    <popup-message
+      data-message="Hello web components message 1"
+    ></popup-message>
+    <popup-message
+      data-message="Hello web components message 2"
+    ></popup-message>
+    <script>
+      window.customElements.define(
+        "popup-message",
+        class extends HTMLElement {
+          constructor() {
+            super();
+            const template = document.getElementById("popup-message-tpl");
+            const shadowRoot = this.attachShadow({ mode: "closed" });
+            shadowRoot.appendChild(template.content.cloneNode(true));
+            shadowRoot.querySelector(
+              ".message"
+            ).textContent = this.getAttribute("data-message");
+          }
+        }
+      );
+    </script>
+  </body>
+</html>

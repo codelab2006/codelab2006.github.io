@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Hello, web components</title>
+  </head>
+  <body>
+    <div id="operation">
+      <button id="add">添加自定义元素</button>
+      <button id="update">更新自定义元素</button>
+      <button id="remove">移除自定义元素</button>
+    </div>
+    <div id="container"></div>
+    <ul id="console"></ul>
+    <script>
+      customElements.define(
+        "custom-element",
+        class extends HTMLElement {
+          static get observedAttributes() {
+            return ["attribute-aaa", "attribute-bbb"];
+          }
+
+          constructor() {
+            super();
+            log("Create CustomElement");
+            this.shadow = this.attachShadow({ mode: "open" });
+            const div = document.createElement("div");
+            div.setAttribute("class", "box");
+            const style = document.createElement("style");
+            style.textContent =
+              ".box { height: 100px; background-color: red; border: 2px solid black; margin: 2px; }";
+            this.shadow.appendChild(style);
+            this.shadow.appendChild(div);
+          }
+
+          connectedCallback() {
+            log(">>>>>>>>>> connectedCallback called");
+          }
+
+          disconnectedCallback() {
+            log(">>>>>>>>>> disconnectedCallback called");
+          }
+
+          adoptedCallback() {
+            log(">>>>>>>>>> adoptedCallback called");
+          }
+
+          attributeChangedCallback(name, oldValue, newValue) {
+            log(
+              `>>>>>>>>>> attributeChangedCallback called name: ${name}, oldValue: ${oldValue}, newValue: ${newValue}`
+            );
+          }
+        }
+      );
+      const log = function (msg) {
+        const li = document.createElement("li");
+        li.textContent = msg;
+        document.querySelector("#console").appendChild(li);
+      };
+
+      {
+        const operationEl = document.querySelector("#operation");
+        const addEl = operationEl.querySelector("#add");
+        const updateEl = operationEl.querySelector("#update");
+        updateEl.disabled = true;
+        const removeEl = operationEl.querySelector("#remove");
+        removeEl.disabled = true;
+
+        let customElement = null;
+        const containerEl = document.querySelector("#container");
+        addEl.addEventListener("click", () => {
+          customElement = document.createElement("custom-element");
+          log("CustomElement created");
+          log("Before customElement setAttribute attribute-aaa");
+          customElement.setAttribute("attribute-aaa", "AAA");
+          log("After customElement setAttribute attribute-aaa");
+          log("Before customElement setAttribute attribute-bbb");
+          customElement.setAttribute("attribute-bbb", "BBB");
+          log("After customElement setAttribute attribute-bbb");
+          containerEl.appendChild(customElement);
+          addEl.disabled = true;
+          updateEl.disabled = removeEl.disabled = false;
+        });
+
+        updateEl.addEventListener("click", () => {
+          customElement.setAttribute("attribute-aaa", "AAAChange");
+          customElement.setAttribute("attribute-bbb", "BBBChange");
+        });
+        removeEl.addEventListener("click", () => {
+          containerEl.removeChild(customElement);
+          addEl.disabled = false;
+          updateEl.disabled = removeEl.disabled = true;
+        });
+      }
+    </script>
+  </body>
+</html>
