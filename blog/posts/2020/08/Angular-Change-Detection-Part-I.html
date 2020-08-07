@@ -96,7 +96,7 @@
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">=&gt; ngOnDestroy()</span><span class="dl">"</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div></div><p>假设有这么一种情况，我希望组件的时间戳变量每秒都被更新，但是只有当我点击 “更新时间戳” 的时候才更新到页面上。我们可能会想到将更新的操作放到一个 Interval 里，代码如下：</p><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+</code></pre></div></div><p>如上面的代码所示，我们将时间戳变量的更新放到了 update 方法中，这个问题便得到了解决。</p><p>假设有这么一种情况，我希望组件的时间戳变量每秒都被更新，但是只有当我点击 “更新时间戳” 的时候才更新到页面上。我们可能会想到将更新的操作放到一个 Interval 里，代码如下：</p><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
   <span class="na">selector</span><span class="p">:</span> <span class="dl">"</span><span class="s2">app-root</span><span class="dl">"</span><span class="p">,</span>
   <span class="na">template</span><span class="p">:</span> <span class="s2">`
     当前时间戳：
