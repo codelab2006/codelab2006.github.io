@@ -3,7 +3,7 @@ import { Component, OnInit, SimpleChanges } from '@angular/core';
 @Component({
   selector: 'app-x2',
   template: `
-    <div>
+    <div style="border: 1px solid; padding: 10px;">
       x2 works!
     </div>
   `,

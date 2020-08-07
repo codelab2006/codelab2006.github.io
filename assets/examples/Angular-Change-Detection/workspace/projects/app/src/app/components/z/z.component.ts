@@ -3,8 +3,10 @@ import { Component, OnInit, ChangeDetectionStrategy, SimpleChanges, ChangeDetect
 @Component({
   selector: 'app-z',
   template: `
-    <div>
-      <button (click)="onClick()">z</button>
+    <div style="border: 1px solid; padding: 10px;">
+      <button (click)="onDetach()">z (detach)</button>
+      <button (click)="onReattach()">z (reattach)</button>
+      <button (click)="onMarkForCheck()">z (markForCheck)</button>
       app-z (ChangeDetectionStrategy.OnPush), {{time}}
     </div>
   `,
@@ -20,7 +22,15 @@ export class ZComponent implements OnInit {
     return new Date().getTime();
   }
 
-  onClick(): void {
+  onDetach(): void {
+    this.ref.detach();
+  }
+
+  onReattach(): void {
+    this.ref.reattach();
+  }
+
+  onMarkForCheck(): void {
     this.ref.markForCheck();
   }
 

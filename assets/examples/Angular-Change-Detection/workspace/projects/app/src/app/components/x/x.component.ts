@@ -3,9 +3,10 @@ import { Component, OnInit, ChangeDetectorRef, SimpleChanges } from '@angular/co
 @Component({
   selector: 'app-x',
   template: `
-    <div>
+    <div style="border: 1px solid; padding: 10px;">
       <button (click)="onDetach()">x (detach)</button>
       <button (click)="onReattach()">x (reattach)</button>
+      <button (click)="onMarkForCheck()">x (markForCheck)</button>
       <button (click)="onDetectChanges()">x (detectChanges)</button>
       app-x, {{time}}
       <app-x1></app-x1>
@@ -65,5 +66,9 @@ export class XComponent implements OnInit {
 
   onDetectChanges(): void {
     this.ref.detectChanges();
+  }
+
+  onMarkForCheck(): void {
+    this.ref.markForCheck();
   }
 }

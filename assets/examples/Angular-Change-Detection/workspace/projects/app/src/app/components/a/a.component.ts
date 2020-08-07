@@ -3,8 +3,8 @@ import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 @Component({
   selector: 'app-a',
   template: `
-    <div>
-      <button (click)="0">a</button>
+    <div style="border: 1px solid; padding: 10px;">
+      <button (click)="0">trigger change detection from a</button>
       app-a, {{p}}
       <app-b [p]="p" [o]="o"></app-b>
     </div>
