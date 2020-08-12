@@ -8,7 +8,7 @@ title: Angular Change Detection (Part I)
 
 ## 二. 什么是 Change Detection
 
-Change Detection 是一种跟踪应用程序状态以及变化，并将状态及变化更新到屏幕上的机制。它确保用户看到的状态与程序的状态保持一致。由两部分组成：1. 状态跟踪，2. 渲染。
+Change Detection 是一种跟踪应用程序状态及其变化，并将状态及其变化更新到屏幕上的机制。它确保用户看到的状态与程序的状态保持一致。由两部分组成：1. 状态跟踪，2. 渲染。
 
 ## 三. Change Detection 在 Angular 中的实现
 
@@ -32,9 +32,9 @@ export class AppComponent {
 }
 ```
 
-上面例子中我们将组件的 n 属性与 span 元素的 textContent 属性进行了绑定。当点击更新时间戳按钮时，update 方法被执行，并且触发了 Change Detection。这时 Angular 重新计算绑定中的表达式，这里的表达式就只是取组件的 n 属性的值。Angular 发现当前的 n （时间戳）和之前的时间戳不同，于是更新了 span 元素的 textContent 属性，新的时间戳被显示在页面上。
+上面例子中我们将组件的属性 n 与 span 元素的 textContent 属性进行了绑定。当点击更新时间戳按钮时，update 方法被执行，并且触发了 Change Detection。这时 Angular 重新计算绑定中的表达式，这里的表达式就只是取组件的属性 n 的值。Angular 发现当前的 n （时间戳）和之前的时间戳不同，于是更新了 span 元素的 textContent 属性，新的时间戳被显示在页面上。
 
-## 二. ExpressionChangedAfterItHasBeenCheckedError
+## 四. ExpressionChangedAfterItHasBeenCheckedError
 
 在使用 Angular 的过程中，有时由于我们的代码逻辑问题，在开发模式下 Angular 会抛出 ExpressionChangedAfterItHasBeenCheckedError 异常。通过下面的例子我们来重现并且分析它。
 
@@ -52,42 +52,10 @@ export class AppComponent {
   get n(): number {
     return Date.now();
   }
-
-  ngOnChanges(): void {
-    console.log("=> ngOnChanges()");
-  }
-
-  ngOnInit(): void {
-    console.log("=> ngOnInit()");
-  }
-
-  ngDoCheck(): void {
-    console.log("=> ngDoCheck()");
-  }
-
-  ngAfterContentInit(): void {
-    console.log("=> ngAfterContentInit()");
-  }
-
-  ngAfterContentChecked(): void {
-    console.log("=> ngAfterContentChecked()");
-  }
-
-  ngAfterViewInit(): void {
-    console.log("=> ngAfterViewInit()");
-  }
-
-  ngAfterViewChecked(): void {
-    console.log("=> ngAfterViewChecked()");
-  }
-
-  ngOnDestroy(): void {
-    console.log("=> ngOnDestroy()");
-  }
 }
 ```
 
-在上面的例子中我们将 getter n 返回的时间戳绑定到了 span 的 textContent 属性上，并且添加了 log 来记录 Angular 组件 lifecycle hook 方法的调用。当我们点击更新时间戳按钮时，你会看到 ExpressionChangedAfterItHasBeenCheckedError 异常被抛出。如下所示：
+在上面的例子中我们将 getter n 返回的时间戳绑定到了 span 的 textContent 属性上，当我们点击更新时间戳按钮时，你会看到 ExpressionChangedAfterItHasBeenCheckedError 异常被抛出。如下所示：
 
 ![screenshot](/assets/images/expression-changed-afterIt-has-been-checked-error.png)
 
@@ -127,38 +95,6 @@ export class AppComponent {
   update() {
     this.v = Date.now();
   }
-
-  ngOnChanges(): void {
-    console.log("=> ngOnChanges()");
-  }
-
-  ngOnInit(): void {
-    console.log("=> ngOnInit()");
-  }
-
-  ngDoCheck(): void {
-    console.log("=> ngDoCheck()");
-  }
-
-  ngAfterContentInit(): void {
-    console.log("=> ngAfterContentInit()");
-  }
-
-  ngAfterContentChecked(): void {
-    console.log("=> ngAfterContentChecked()");
-  }
-
-  ngAfterViewInit(): void {
-    console.log("=> ngAfterViewInit()");
-  }
-
-  ngAfterViewChecked(): void {
-    console.log("=> ngAfterViewChecked()");
-  }
-
-  ngOnDestroy(): void {
-    console.log("=> ngOnDestroy()");
-  }
 }
 ```
 
@@ -187,38 +123,6 @@ export class AppComponent {
     setInterval(() => {
       this.v = Date.now();
     }, 1000);
-  }
-
-  ngOnChanges(): void {
-    console.log("=> ngOnChanges()");
-  }
-
-  ngOnInit(): void {
-    console.log("=> ngOnInit()");
-  }
-
-  ngDoCheck(): void {
-    console.log("=> ngDoCheck()");
-  }
-
-  ngAfterContentInit(): void {
-    console.log("=> ngAfterContentInit()");
-  }
-
-  ngAfterContentChecked(): void {
-    console.log("=> ngAfterContentChecked()");
-  }
-
-  ngAfterViewInit(): void {
-    console.log("=> ngAfterViewInit()");
-  }
-
-  ngAfterViewChecked(): void {
-    console.log("=> ngAfterViewChecked()");
-  }
-
-  ngOnDestroy(): void {
-    console.log("=> ngOnDestroy()");
   }
 }
 ```
@@ -249,43 +153,13 @@ export class AppComponent {
       }, 1000);
     });
   }
-
-  ngOnChanges(): void {
-    console.log("=> ngOnChanges()");
-  }
-
-  ngOnInit(): void {
-    console.log("=> ngOnInit()");
-  }
-
-  ngDoCheck(): void {
-    console.log("=> ngDoCheck()");
-  }
-
-  ngAfterContentInit(): void {
-    console.log("=> ngAfterContentInit()");
-  }
-
-  ngAfterContentChecked(): void {
-    console.log("=> ngAfterContentChecked()");
-  }
-
-  ngAfterViewInit(): void {
-    console.log("=> ngAfterViewInit()");
-  }
-
-  ngAfterViewChecked(): void {
-    console.log("=> ngAfterViewChecked()");
-  }
-
-  ngOnDestroy(): void {
-    console.log("=> ngOnDestroy()");
-  }
 }
 ```
 
-这次正确了，内存中的时间戳变量每秒都在更新，但是并没有触发 Change Detection ，所以页面没用发生变化。当我们点击按钮时才触发 Change Detection 的执行，页面才被刷新。我们可以使用 runOutsideAngular 方法集成一些第三方库，例如：pixijs 到 Angluar 的应用中。
+这次正确了，内存中的时间戳变量每秒都在更新，但是并没有触发 Change Detection ，所以页面没用发生变化。当我们点击按钮时才触发 Change Detection 的执行，页面才被刷新。
+
+我们可以使用 runOutsideAngular 方法将 Angular 与第三方库进行集成，使第三方库在 Angular 之外运行，避免触发不必要的 Change Detection。
 
 ## 总结
 
-这篇文章是 Angular Change Detection 的第一部分内容，我们接触了 Change Detection ，知道了 ExpressionChangedAfterItHasBeenCheckedError 错误的原因，在第二部分我们将介绍如何控制组件的 Change Detection 。
+这篇文章是 Angular Change Detection 的第一部分，我们接触了 Change Detection ，知道了 ExpressionChangedAfterItHasBeenCheckedError 错误的原因，在第二部分我们将介绍如何控制组件的 Change Detection 。
