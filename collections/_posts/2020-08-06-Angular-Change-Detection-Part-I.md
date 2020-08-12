@@ -4,7 +4,35 @@ title: Angular Change Detection (Part I)
 
 ## 一. 前言
 
-类似 Angular，React 的前端框架让我们的前端开发变得高效。而他们都有一个核心的功能：Change Detection。这篇文章主要介绍 Angular 中的 Change Detection 机制，这里并不是带着大家读 Angular 的源代码。而是通过例子让大家理解和控制 Angular 中的 Change Detection，这对于前端性能优化很有帮助。
+类似 Angular，React 的前端框架让我们的前端开发变得高效。而他们都有一个核心的功能：Change Detection。这篇文章主要介绍 Angular 中的 Change Detection，这里并不是带着大家读 Angular 的源代码。而是通过例子让大家理解和控制 Angular 中的 Change Detection，这对于前端性能优化很有帮助。这篇文章分为两部分，这是第一部分，阅读第二部分请看[这里](https://www.bing.com)
+
+## 二. 什么是 Change Detection
+
+Change Detection 是一种跟踪应用程序状态以及变化，并将状态及变化更新到屏幕上的机制。它确保用户看到的状态与程序的状态保持一致。由两部分组成：1. 状态跟踪，2. 渲染。
+
+## 三. Change Detection 在 Angular 中的实现
+
+我们在使用 Angular 时，常常将组件属性绑定到 DOM 元素。Angular 在分析 template 时，会将这些绑定记录下来。当 Change Detection 被触发时，Angular 会重新计算这些绑定中的表达式。如果表达式返回的值发生了变化，Angular 则会更新绑定所关联的 DOM 元素。我们来看一个简单的例子：
+
+```typescript
+@Component({
+  selector: "app-root",
+  template: `
+    当前时间戳：
+    <span [textContent]="n"></span>
+    <button (click)="update()">更新时间戳</button>
+  `,
+  styles: [],
+})
+export class AppComponent {
+  n = Date.now();
+  update(): void {
+    this.n = Date.now();
+  }
+}
+```
+
+上面例子中我们将组件的 n 属性与 span 元素的 textContent 属性进行了绑定。当点击更新时间戳按钮时，update 方法被执行，并且触发了 Change Detection。这时 Angular 重新计算绑定中的表达式，这里的表达式就只是取组件的 n 属性的值。Angular 发现当前的 n （时间戳）和之前的时间戳不同，于是更新了 span 元素的 textContent 属性，新的时间戳被显示在页面上。
 
 ## 二. ExpressionChangedAfterItHasBeenCheckedError
 
@@ -256,7 +284,7 @@ export class AppComponent {
 }
 ```
 
-这次正确了，内存中的时间戳变量每秒都在更新，但是并没有触发 Change Detection ，所以页面没用发生变化。当我们点击按钮时才触发 Change Detection 的执行，页面才被刷新。
+这次正确了，内存中的时间戳变量每秒都在更新，但是并没有触发 Change Detection ，所以页面没用发生变化。当我们点击按钮时才触发 Change Detection 的执行，页面才被刷新。我们可以使用 runOutsideAngular 方法集成一些第三方库，例如：pixijs 到 Angluar 的应用中。
 
 ## 总结
 
