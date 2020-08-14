@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><title> Angular Change Detection (Part II) - 黄永健的个人站点 </title><link rel="stylesheet" href="/assets/css/icons.css"/><link rel="stylesheet" href="/assets/css/normalize.css"/><link rel="stylesheet" href="/assets/css/styles.css"/></head><body class="d-flex flex-direction-column"><header class="p-relative"><div class="d-flex h-4 px-8px bg-primary text-light align-items-center justify-content-space-between"><div class="font-size-2em">网络日志</div><button id="nav-toggler" class="icon-nav-toggler"></button></div><div id="nav-container" class="bg-primary px-8px align-items-center"><nav><ul class="d-flex"><li class="mx-16px my-16px"><a class="text-light" href="/">首页</a></li><li class="mx-16px my-16px"><a class="text-light" href="/blog">网络日志</a></li><li class="mx-16px my-16px"><a class="text-light" href="/codelab">Codelab</a></li><li class="mx-16px my-16px"><a class="text-light" href="/about.html">关于作者</a></li></ul></nav></div></header><main class="flex-grow-1"><div class="d-flex justify-content-center my-48px px-8px"><article class="container"><h1 class="p-6px bb-1px"> Angular Change Detection (Part II) </h1><div class="my-16px"><span class="d-block p-6px">作者：黄永健</span><span class="d-block p-6px">日期：2020-08-10</span></div><div class="my-32px p-6px content"><h2 id="一-前言">一. 前言</h2><p>类似 Angular，React 的前端框架让我们的前端开发变得高效。而他们都有一个核心的功能：Change Detection。这篇文章主要介绍 Angular 中的 Change Detection，这里并不是带着大家读 Angular 的源代码。而是通过例子让大家理解和掌握如何控制 Angular 中的 Change Detection，这对于前端性能优化很有帮助。本知识点分为三部分，这是第二部分。</p><h2 id="二-深入-change-detection-和-expressionchangedafterithasbeencheckederror">二. 深入 Change Detection 和 ExpressionChangedAfterItHasBeenCheckedError</h2><p>在第一部分的 ExpressionChangedAfterItHasBeenCheckedError 小节中，我们的 getter 每次返回当前的时间戳，导致 ExpressionChangedAfterItHasBeenCheckedError 异常被抛出。但是有时我们发现我们在组件的 ngAfterViewInit 和 ngAfterViewChecked 方法中修改了绑定的属性，也会导致此异常被抛出。接下来我们就来分析一下其中的原因。我们先看以下代码：</p><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">SimpleChanges</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@angular/core</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">"</span><span class="s2">app-root</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`&lt;span [textContent]="n"&gt;&lt;/span&gt;`</span><span class="p">,</span>
+  <span class="na">styles</span><span class="p">:</span> <span class="p">[],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
+  <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">ngOnChanges</span><span class="p">(</span><span class="nx">simpleChanges</span><span class="p">:</span> <span class="nx">SimpleChanges</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">app -&gt; ngOnChanges</span><span class="dl">"</span><span class="p">,</span> <span class="nx">simpleChanges</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">n</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngOnInit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">app -&gt; ngOnInit</span><span class="dl">"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">n</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngDoCheck</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="mi">100</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">app -&gt; ngDoCheck</span><span class="dl">"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">n</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngAfterContentInit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="mi">1000</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">app -&gt; ngAfterContentInit</span><span class="dl">"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">n</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngAfterContentChecked</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="mi">10000</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">app -&gt; ngAfterContentChecked</span><span class="dl">"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">n</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngAfterViewInit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="mi">100000</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">app -&gt; ngAfterViewInit</span><span class="dl">"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">n</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngAfterViewChecked</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="mi">1000000</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">app -&gt; ngAfterViewChecked</span><span class="dl">"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">n</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngOnDestroy</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">n</span> <span class="o">+=</span> <span class="mi">10000000</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">app -&gt; ngOnDestroy</span><span class="dl">"</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">n</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><p>我们在浏览器中打开我们的页面，运行结果如下：</p><p><img src="/assets/images/expression-changed-afterIt-has-been-checked-error-II.png" alt="screenshot"/></p><p>从截图中可以看到，有两个 ExpressionChangedAfterItHasBeenCheckedError 异常被抛出，这里我们只看第一个异常，第二个异常和第一个类似。我们从第一个异常的描述中看到：“ Previous value for ‘textContent’: ‘11110’. Current value: ‘1111110’ ”。这说明辅助的 check 比较的两个值分别是 11110 和 1111110，而 11110 是在执行 ngAfterContentChecked 方法时所产生的值。这说明在 ngAfterContentChecked 方法执行之后，Angular 已经将属性 n 的值渲染到页面上。之后在 ngAfterViewInit，ngAfterViewChecked 方法中对 n 的更新，在 Angular 看来是不正确的。为了验证我们的假设，我们来看看 Angular 源码中的 refreshView 方法：</p><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">refreshView</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="nx">tView</span><span class="p">:</span> <span class="nx">TView</span><span class="p">,</span>
+  <span class="nx">lView</span><span class="p">:</span> <span class="nx">LView</span><span class="p">,</span>
+  <span class="nx">templateFn</span><span class="p">:</span> <span class="nx">ComponentTemplate</span><span class="o">&lt;</span><span class="p">{}</span><span class="o">&gt;</span> <span class="o">|</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nx">context</span><span class="p">:</span> <span class="nx">T</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span> <span class="p">...</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="p">...</span> <span class="p">...</span>
+
+    <span class="c1">// 这里将执行 OnInit, OnChanges, DoCheck 方法</span>
+    <span class="c1">// execute pre-order hooks (OnInit, OnChanges, DoCheck)</span>
+    <span class="c1">// PERF WARNING: do NOT extract this to a separate function without running benchmarks</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">checkNoChangesMode</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">hooksInitPhaseCompleted</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">preOrderCheckHooks</span> <span class="o">=</span> <span class="nx">tView</span><span class="p">.</span><span class="nx">preOrderCheckHooks</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">preOrderCheckHooks</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">executeCheckHooks</span><span class="p">(</span><span class="nx">lView</span><span class="p">,</span> <span class="nx">preOrderCheckHooks</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">preOrderHooks</span> <span class="o">=</span> <span class="nx">tView</span><span class="p">.</span><span class="nx">preOrderHooks</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">preOrderHooks</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">executeInitAndCheckHooks</span><span class="p">(</span>
+            <span class="nx">lView</span><span class="p">,</span>
+            <span class="nx">preOrderHooks</span><span class="p">,</span>
+            <span class="nx">InitPhaseState</span><span class="p">.</span><span class="nx">OnInitHooksToBeRun</span><span class="p">,</span>
+            <span class="kc">null</span>
+          <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">incrementInitPhaseFlags</span><span class="p">(</span><span class="nx">lView</span><span class="p">,</span> <span class="nx">InitPhaseState</span><span class="p">.</span><span class="nx">OnInitHooksToBeRun</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="p">...</span> <span class="p">...</span>
+
+    <span class="c1">// 这里将执行 AfterContentInit, AfterContentChecked 方法</span>
+    <span class="c1">// execute content hooks (AfterContentInit, AfterContentChecked)</span>
+    <span class="c1">// PERF WARNING: do NOT extract this to a separate function without running benchmarks</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">checkNoChangesMode</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">hooksInitPhaseCompleted</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">contentCheckHooks</span> <span class="o">=</span> <span class="nx">tView</span><span class="p">.</span><span class="nx">contentCheckHooks</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">contentCheckHooks</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">executeCheckHooks</span><span class="p">(</span><span class="nx">lView</span><span class="p">,</span> <span class="nx">contentCheckHooks</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">contentHooks</span> <span class="o">=</span> <span class="nx">tView</span><span class="p">.</span><span class="nx">contentHooks</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">contentHooks</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">executeInitAndCheckHooks</span><span class="p">(</span>
+            <span class="nx">lView</span><span class="p">,</span>
+            <span class="nx">contentHooks</span><span class="p">,</span>
+            <span class="nx">InitPhaseState</span><span class="p">.</span><span class="nx">AfterContentInitHooksToBeRun</span>
+          <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">incrementInitPhaseFlags</span><span class="p">(</span>
+          <span class="nx">lView</span><span class="p">,</span>
+          <span class="nx">InitPhaseState</span><span class="p">.</span><span class="nx">AfterContentInitHooksToBeRun</span>
+        <span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="p">...</span> <span class="p">...</span>
+
+    <span class="c1">// 这里将触发页面刷新</span>
+    <span class="c1">// Refresh child component views.</span>
+    <span class="kd">const</span> <span class="nx">components</span> <span class="o">=</span> <span class="nx">tView</span><span class="p">.</span><span class="nx">components</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">components</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">refreshChildComponents</span><span class="p">(</span><span class="nx">lView</span><span class="p">,</span> <span class="nx">components</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="p">...</span> <span class="p">...</span>
+
+    <span class="c1">// 这里将执行 AfterViewInit, AfterViewChecked 方法</span>
+    <span class="c1">// execute view hooks (AfterViewInit, AfterViewChecked)</span>
+    <span class="c1">// PERF WARNING: do NOT extract this to a separate function without running benchmarks</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">checkNoChangesMode</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">hooksInitPhaseCompleted</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">viewCheckHooks</span> <span class="o">=</span> <span class="nx">tView</span><span class="p">.</span><span class="nx">viewCheckHooks</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">viewCheckHooks</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">executeCheckHooks</span><span class="p">(</span><span class="nx">lView</span><span class="p">,</span> <span class="nx">viewCheckHooks</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">viewHooks</span> <span class="o">=</span> <span class="nx">tView</span><span class="p">.</span><span class="nx">viewHooks</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">viewHooks</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">executeInitAndCheckHooks</span><span class="p">(</span>
+            <span class="nx">lView</span><span class="p">,</span>
+            <span class="nx">viewHooks</span><span class="p">,</span>
+            <span class="nx">InitPhaseState</span><span class="p">.</span><span class="nx">AfterViewInitHooksToBeRun</span>
+          <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">incrementInitPhaseFlags</span><span class="p">(</span>
+          <span class="nx">lView</span><span class="p">,</span>
+          <span class="nx">InitPhaseState</span><span class="p">.</span><span class="nx">AfterViewInitHooksToBeRun</span>
+        <span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="p">...</span> <span class="p">...</span>
+  <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+    <span class="nx">leaveView</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><p>这里移除了一些我们目前并不关心的代码，我们可以看到最先执行的是 OnInit, OnChanges, DoCheck，其次是 AfterContentInit, AfterContentChecked，然后将触发页面的刷新，最后执行 AfterViewInit, AfterViewChecked。这就解释了为什么在 AfterViewInit, AfterViewChecked 方法中修改了绑定的属性，也会导致此异常被抛出。所以这里我们可以更加准确的描述，如果我们想避免 ExpressionChangedAfterItHasBeenCheckedError 异常，我们需要保证在 Change Detection 过程中，在页面刷新之后，在辅助的 check 执行之前，表达式的值不发生改变。</p><p>这里我们还验证了一点，页面刷新是在 AfterViewInit, AfterViewChecked 方法执行之前发生。</p></div></article></div></main><footer class="min-h-16 px-8px bg-primary p-relative"><div id="footer-panel" class="bg-primary px-8px"></div></footer><script src="/assets/js/script.js"></script></body></html>

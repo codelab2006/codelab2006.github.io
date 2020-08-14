@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><title> Angular Change Detection (Part III) - 黄永健的个人站点 </title><link rel="stylesheet" href="/assets/css/icons.css"/><link rel="stylesheet" href="/assets/css/normalize.css"/><link rel="stylesheet" href="/assets/css/styles.css"/></head><body class="d-flex flex-direction-column"><header class="p-relative"><div class="d-flex h-4 px-8px bg-primary text-light align-items-center justify-content-space-between"><div class="font-size-2em">网络日志</div><button id="nav-toggler" class="icon-nav-toggler"></button></div><div id="nav-container" class="bg-primary px-8px align-items-center"><nav><ul class="d-flex"><li class="mx-16px my-16px"><a class="text-light" href="/">首页</a></li><li class="mx-16px my-16px"><a class="text-light" href="/blog">网络日志</a></li><li class="mx-16px my-16px"><a class="text-light" href="/codelab">Codelab</a></li><li class="mx-16px my-16px"><a class="text-light" href="/about.html">关于作者</a></li></ul></nav></div></header><main class="flex-grow-1"><div class="d-flex justify-content-center my-48px px-8px"><article class="container"><h1 class="p-6px bb-1px"> Angular Change Detection (Part III) </h1><div class="my-16px"><span class="d-block p-6px">作者：黄永健</span><span class="d-block p-6px">日期：2020-08-12</span></div><div class="my-32px p-6px content"><h2 id="一-前言">一. 前言</h2><p>类似 Angular，React 的前端框架让我们的前端开发变得高效。而他们都有一个核心的功能：Change Detection。这篇文章主要介绍 Angular 中的 Change Detection，这里并不是带着大家读 Angular 的源代码。而是通过例子让大家理解和掌握如何控制 Angular 中的 Change Detection，这对于前端性能优化很有帮助。本知识点分为三部分，这是第三部分。</p><h2 id="二-控制组件的-change-detection">二. 控制组件的 Change Detection</h2><p>前面两部分我们对 Change Detection 执行的细节有了一定的了解，接下来我们来学习如何控制组件的 Change Detection。 Angular 为我们提供了 ChangeDetectionStrategy 和 ChangeDetectorRef 两个 API 来帮助我们控制组件的 Change Detection。</p><h3 id="changedetectionstrategy">ChangeDetectionStrategy</h3><p>当我们在使用 @Component 定义组件时，我们可以配置组件的 changeDetection 属性为 ChangeDetectionStrategy.Default 或者 ChangeDetectionStrategy.OnPush。</p><h4 id="changedetectionstrategydefault">ChangeDetectionStrategy.Default</h4><p><a href="https://angular.io/api/core/ChangeDetectionStrategy#Default">ChangeDetectionStrategy.Default</a> 是 changeDetection 属性的默认值。将使用 CheckAlways 策略，正如我们之前看到的，当 Change Detection 被触发时，每个组件将执行自己的 Change Detection。</p><h4 id="changedetectionstrategyonpush">ChangeDetectionStrategy.OnPush</h4><p><a href="https://angular.io/api/core/ChangeDetectionStrategy#OnPush">ChangeDetectionStrategy.OnPush</a> 将使用 CheckOnce 策略。这个策略使组件在初始时只执行一次 Change Detection。但是也有一些例外的情况。请看下面的例子：</p><div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">"</span><span class="s2">app-root</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+    &lt;div&gt;
+      app component: &lt;span [textContent]="message?.content"&gt;&lt;/span&gt;
+      &lt;button (click)="updateContent()"&gt;
+        update message content from app-root
+      &lt;/button&gt;
+      &lt;button (click)="updateMessage()"&gt;
+        update message object from app-root
+      &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;app-message [message]="message"&gt;&lt;/app-message&gt;
+  `</span><span class="p">,</span>
+  <span class="na">styles</span><span class="p">:</span> <span class="p">[],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppComponent</span> <span class="p">{</span>
+  <span class="nl">message</span><span class="p">:</span> <span class="nx">Message</span> <span class="o">=</span> <span class="p">{</span> <span class="na">content</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Hello World</span><span class="dl">"</span> <span class="p">};</span>
+
+  <span class="nx">updateContent</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello angular</span><span class="dl">"</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">updateMessage</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="p">{</span> <span class="na">content</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Hello angular</span><span class="dl">"</span> <span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kr">interface</span> <span class="nx">Message</span> <span class="p">{</span>
+  <span class="nl">content</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">"</span><span class="s2">app-message</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+    &lt;div&gt;
+      message component (OnPush):
+      &lt;span [textContent]="message?.content"&gt;&lt;/span&gt;
+      &lt;span [textContent]="observable &amp;&amp; observable | async"&gt;&lt;/span&gt;
+      &lt;button (click)="updateContent()"&gt;
+        update message content from app-message
+      &lt;/button&gt;
+      &lt;button (click)="updateMessage()"&gt;
+        update message object from app-message
+      &lt;/button&gt;
+      &lt;button (click)="updateContentTimeout()"&gt;
+        update message content from app-message (timeout)
+      &lt;/button&gt;
+      &lt;button (click)="updateContentTimer()"&gt;
+        update message content from app-message (timer)
+      &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;app-child [message]="message"&gt;&lt;/app-child&gt;
+  `</span><span class="p">,</span>
+  <span class="na">changeDetection</span><span class="p">:</span> <span class="nx">ChangeDetectionStrategy</span><span class="p">.</span><span class="nx">OnPush</span><span class="p">,</span>
+  <span class="na">styles</span><span class="p">:</span> <span class="p">[],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">MessageComponent</span> <span class="p">{</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="nx">Message</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+  <span class="nl">observable</span><span class="p">:</span> <span class="nx">Observable</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+  <span class="kd">constructor</span><span class="p">()</span> <span class="p">{}</span>
+
+  <span class="nx">updateContent</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello angular</span><span class="dl">"</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">updateMessage</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="p">{</span> <span class="na">content</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Hello angular</span><span class="dl">"</span> <span class="p">};</span>
+  <span class="p">}</span>
+
+  <span class="nx">updateContentTimeout</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello angular timeout</span><span class="dl">"</span><span class="p">;</span>
+    <span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">updateContentTimer</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">observable</span> <span class="o">=</span> <span class="nx">timer</span><span class="p">(</span><span class="mi">1000</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span>
+      <span class="nx">map</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello angular timer</span><span class="dl">"</span><span class="p">;</span>
+        <span class="k">return</span> <span class="dl">"</span><span class="s2">Hello angular timer</span><span class="dl">"</span><span class="p">;</span>
+      <span class="p">})</span>
+    <span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngOnChanges</span><span class="p">(</span><span class="nx">simpleChanges</span><span class="p">:</span> <span class="nx">SimpleChanges</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">message -&gt; ngOnChanges</span><span class="dl">"</span><span class="p">,</span> <span class="nx">simpleChanges</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngOnInit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">message -&gt; ngOnInit</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngDoCheck</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">message -&gt; ngDoCheck</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngAfterContentInit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">message -&gt; ngAfterContentInit</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngAfterContentChecked</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">message -&gt; ngAfterContentChecked</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngAfterViewInit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">message -&gt; ngAfterViewInit</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngAfterViewChecked</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">message -&gt; ngAfterViewChecked</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">ngOnDestroy</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">message -&gt; ngOnDestroy</span><span class="dl">"</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">@</span><span class="nd">Component</span><span class="p">({</span>
+  <span class="na">selector</span><span class="p">:</span> <span class="dl">"</span><span class="s2">app-child</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">`
+    &lt;div&gt;
+      child component:
+      &lt;span [textContent]="message?.content"&gt;&lt;/span&gt;
+      &lt;button (click)="updateContent()"&gt;
+        update message content from app-child
+      &lt;/button&gt;
+      &lt;button (click)="updateMessage()"&gt;
+        update message object from app-child
+      &lt;/button&gt;
+    &lt;/div&gt;
+  `</span><span class="p">,</span>
+  <span class="na">styles</span><span class="p">:</span> <span class="p">[],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">ChildComponent</span> <span class="p">{</span>
+  <span class="p">@</span><span class="nd">Input</span><span class="p">()</span>
+  <span class="nx">message</span><span class="p">:</span> <span class="nx">Message</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+  <span class="kd">constructor</span><span class="p">()</span> <span class="p">{}</span>
+
+  <span class="nx">updateContent</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello angular</span><span class="dl">"</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">updateMessage</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">message</span> <span class="o">=</span> <span class="p">{</span> <span class="na">content</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Hello angular</span><span class="dl">"</span> <span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><p>如果你运行上面的例子代码，你会发现在以下几种情况下，设置为 OnPush 的 Message 组件任然会执行自己的 Change Detection。</p><ol><li><p>输入参数引用发生变化。</p></li><li><p>组件内部触发 DOM 事件，例如组件内部按钮被点击。</p></li><li><p>触发通过 Async 管道订阅了 observable 事件。</p></li></ol><p>OnPush 的这些细小的陷阱让我们在使用时应该加倍小心。特别是在使用 OnPush 跳过重型组件，进行性能优化的时候。我们应该通过测试反复确认 Change Detection 是否正如我们期望的方式执行。</p><h3 id="changedetectorref">ChangeDetectorRef</h3><p>除了在组件定义时配置 Change Detection 策略之外，我们也可以使用 ChangeDetectorRef 控制组件是否执行 Change Detection。ChangeDetectorRef 包括以下主要的方法:</p><ol><li><p>markForCheck，markForCheck 要配合 OnPush 使用。正如上面的例子，在使用 OnPush 的情况下，timer 不会触发组件的 Change Detection。但是如果我们在 timer 的 callback 中调用了 markForCheck，这时将触发组件的 Change Detection。</p></li><li><p>detach 和 reattach，detach 将组件从 Change Detection Tree 中剥离。剥离后组件就不会执行 Change Detection。reattach 将组件重新挂载到 Change Detection Tree。这样在 Change Detection 被触发时，组件将执行自己的 Change Detection。</p></li><li><p>detectChanges，detectChanges 让从 Change Detection Tree 中剥离的组件执行一个 local 的 Change Detection。</p></li></ol><p>ChangeDetectionStrategy 和 ChangeDetectorRef 都可以帮我们 enable 或者 disable 组件的 Change Detection，是很好的性能优化的手段。与使用 ChangeDetectionStrategy 相比使用 ChangeDetectorRef 更容易控制组件的 Change Detection 的执行。</p></div></article></div></main><footer class="min-h-16 px-8px bg-primary p-relative"><div id="footer-panel" class="bg-primary px-8px"></div></footer><script src="/assets/js/script.js"></script></body></html>
