@@ -4,7 +4,7 @@ title: Angular Change Detection (Part I)
 
 ## 一. 前言
 
-类似 Angular，React 的前端框架让我们的前端开发变得高效。而他们都有一个核心的功能：Change Detection。这篇文章主要介绍 Angular 中的 Change Detection，这里并不是带着大家读 Angular 的源代码。而是通过例子让大家理解和控制 Angular 中的 Change Detection，这对于前端性能优化很有帮助。这篇文章分为两部分，这是第一部分，阅读第二部分请看[这里](https://www.bing.com)
+类似 Angular，React 的前端框架让我们的前端开发变得高效。而他们都有一个核心的功能：Change Detection。这篇文章主要介绍 Angular 中的 Change Detection，这里并不是带着大家读 Angular 的源代码。而是通过例子让大家理解和掌握如何控制 Angular 中的 Change Detection，这对于前端性能优化很有帮助。本知识点分为三部分，这是第一部分。
 
 ## 二. 什么是 Change Detection
 
@@ -12,7 +12,7 @@ Change Detection 是一种跟踪应用程序状态及其变化，并将状态及
 
 ## 三. Change Detection 在 Angular 中的实现
 
-我们在使用 Angular 时，常常将组件属性绑定到 DOM 元素。Angular 在分析 template 时，会将这些绑定记录下来。当 Change Detection 被触发时，Angular 会重新计算这些绑定中的表达式。如果表达式返回的值发生了变化，Angular 则会更新绑定所关联的 DOM 元素。我们来看一个简单的例子：
+我们在使用 Angular 时，常常会将组件属性绑定到 DOM 元素。Angular 在分析组件 template 时，会将这些绑定记录下来。当 Change Detection 被触发时，Angular 会重新计算这些绑定中的表达式。如果表达式返回的值发生了变化，Angular 则会更新绑定所关联的 DOM 元素。我们来看一个简单的例子：
 
 ```typescript
 @Component({
@@ -32,11 +32,11 @@ export class AppComponent {
 }
 ```
 
-上面例子中我们将组件的属性 n 与 span 元素的 textContent 属性进行了绑定。当点击更新时间戳按钮时，update 方法被执行，并且触发了 Change Detection。这时 Angular 重新计算绑定中的表达式，这里的表达式就只是取组件的属性 n 的值。Angular 发现当前的 n （时间戳）和之前的时间戳不同，于是更新了 span 元素的 textContent 属性，新的时间戳被显示在页面上。
+上面例子中我们将组件的属性 n 与 span 元素的 textContent 属性进行了绑定。当点击更新时间戳按钮时，update 方法被执行，并且会触发 Change Detection。这时 Angular 会遍历所有的组件，每个组件会重新计算绑定中的表达式，这里的表达式就只是取组件的属性 n 的值。Angular 发现当前的 n （时间戳）和之前的时间戳不同，于是会更新 span 元素的 textContent 属性，新的时间戳被显示在页面上。
 
 ## 四. ExpressionChangedAfterItHasBeenCheckedError
 
-在使用 Angular 的过程中，有时由于我们的代码逻辑问题，在开发模式下 Angular 会抛出 ExpressionChangedAfterItHasBeenCheckedError 异常。通过下面的例子我们来重现并且分析它。
+在使用 Angular 的过程中，有时由于我们代码的逻辑问题，在开发模式下 Angular 会抛出 ExpressionChangedAfterItHasBeenCheckedError 异常。通过下面的例子我们来重现并分析它。
 
 ```typescript
 @Component({
@@ -57,13 +57,13 @@ export class AppComponent {
 
 在上面的例子中我们将 getter n 返回的时间戳绑定到了 span 的 textContent 属性上，当我们点击更新时间戳按钮时，你会看到 ExpressionChangedAfterItHasBeenCheckedError 异常被抛出。如下所示：
 
-![screenshot](/assets/images/expression-changed-afterIt-has-been-checked-error.png)
+![screenshot](/assets/images/expression-changed-afterIt-has-been-checked-error-I.png)
 
-从错误的描述我们可以看到，表达式 (getter) 产生的值在其被 checked (Change Detection) 之后发生了改变。Angular 认为这样的行为是不正确的，所以抛出了此异常。
+从错误的描述我们可以看到，表达式 (这里只是对 getter 的访问) 产生的值在其被 checked (Change Detection) 之后发生了改变。Angular 认为这样的行为是不正确的，所以抛出了此异常。
 
 ### 此异常来自哪里
 
-正如你所知道的，Angular 在初始化，事件处理，异步请求之后会触发 Change Detection 操作。Change Detection 将对每一个数据绑定重新计算其表达式的值，并与老的值进行比对，如果发现不同，则执行更新操作。在开发模式下时，Angular 在执行完 Change Detection 之后还会执行一个辅助的 check 操作来确保 Change Detection 时得到的新值没有再次发生变化。这里需要强调一下只有开发模式下 Angular 才会执行辅助的 check 操作。在产品模式下 Angular 不会执行它，自然不会抛出此异常。
+正如你所知道的，Angular 在初始化，事件处理，Timer，异步请求之后会触发 Change Detection 操作。Change Detection 将对所有组件上的每一个数据绑定重新计算其表达式的值，并与老的值进行比对，如果发现不同，则执行更新操作。在开发模式下时，Angular 在执行完 Change Detection 之后还会执行一个辅助的 check 操作来确保 Change Detection 时得到的新值没有再次发生变化。这里需要强调一下只有开发模式下 Angular 才会执行辅助的 check 操作。在产品模式下 Angular 不会执行它，自然不会抛出此异常。
 
 ### 为什么开发模式下 Angluar 要多做一个 check 操作
 
@@ -127,7 +127,7 @@ export class AppComponent {
 }
 ```
 
-这时我们发现页面每秒都在更新，这不是我们想要的。正如我们之前说的，事件处理会触发 Change Detection 的执行，如果我们想让 setInterval 的调用不触发 Change Detection 的执行，我们可以使用 Angular 提供的 NgZone。
+这时我们发现页面每秒都在更新，这不是我们想要的。正如我们之前说的，Timer 会触发 Change Detection 的执行，如果我们想让 setInterval 的调用不触发 Change Detection 的执行，我们可以使用 Angular 提供的 NgZone。
 
 ```typescript
 @Component({
@@ -156,10 +156,6 @@ export class AppComponent {
 }
 ```
 
-这次正确了，内存中的时间戳变量每秒都在更新，但是并没有触发 Change Detection ，所以页面没用发生变化。当我们点击按钮时才触发 Change Detection 的执行，页面才被刷新。
+我们在 runOutsideAngular 的 callback 中调用 setInterval，这样将不会触发 Change Detection，内存中的时间戳变量每秒都在更新，但是并没有触发 Change Detection ，所以页面没用发生变化。当我们点击按钮时才触发 Change Detection 的执行，页面才被刷新。
 
 我们可以使用 runOutsideAngular 方法将 Angular 与第三方库进行集成，使第三方库在 Angular 之外运行，避免触发不必要的 Change Detection。
-
-## 总结
-
-这篇文章是 Angular Change Detection 的第一部分，我们接触了 Change Detection ，知道了 ExpressionChangedAfterItHasBeenCheckedError 错误的原因，在第二部分我们将介绍如何控制组件的 Change Detection 。
